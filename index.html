@@ -1,17 +1,16 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>O problema é meu ou seu?</title>
+    <title>Balcão de Atendimento</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&display=swap" rel="stylesheet">
 
     <style>
-        /* APARÊNCIA DA PÁGINA */
+        /* APARÊNCIA GERAL DA PÁGINA */
         * {
             box-sizing: border-box;
         }
@@ -27,6 +26,13 @@
             justify-content: center;
             align-items: center;
             text-align: center;
+        }
+
+        .texto-gradiente {
+            background: linear-gradient(to bottom, #d8ff2b, #b3ff00);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
         }
 
         #tela {
@@ -50,14 +56,14 @@
         button {
             background: linear-gradient(#f565ca, #c926d8af) padding-box,
                 linear-gradient(to bottom, #f8f8f859, #fffeff56) border-box;
-    color: #f7f2f6;
-    border: 3px solid transparent;
-    border-radius: 8px;
-    padding: 15px 35px;
-    font-size: 1.2rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.2s;
+            color: #f7f2f6;
+            border: 3px solid transparent;
+            border-radius: 8px;
+            padding: 15px 35px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
         }
 
         button:hover {
@@ -65,43 +71,134 @@
             color: #fff;
         }
 
-        .final {
-            font-size: clamp(2.5rem, 8vw, 6rem);
-            line-height: 1.15;
-            white-space: nowrap;
-            display: inline-block;
-            animation: letreiro 6s linear infinite;
+        /* FORMULÁRIO DE RECLAMAÇÕES E SUGESTÕES */
+        .formulario-reclamacao {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
         }
 
-        @keyframes letreiro {
+        .campo-nome {
+            display: flex;
+            gap: 10px;
+            align-items: stretch;
+        }
+
+        .campo-nome input {
+            flex: 1;
+            min-width: 0;
+            width: 100%;
+            padding: 14px;
+            border: 2px solid white;
+            border-radius: 8px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1rem;
+        }
+
+        .botao-anonimo {
+            padding: 10px 14px;
+            font-size: 0.85rem;
+            white-space: normal;
+        }
+
+        @media (max-width: 600px) {
+            .campo-nome {
+                flex-direction: column;
+            }
+        }
+
+        .formulario-reclamacao label {
+            text-align: left;
+            font-weight: 700;
+        }
+
+        .formulario-reclamacao select,
+        .formulario-reclamacao textarea {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid white;
+            border-radius: 8px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1rem;
+        }
+
+        .formulario-reclamacao textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        /* BOTÃO EXCLUSIVO DE RECLAMAÇÃO */
+        .botao-reclamacao {
+            background: linear-gradient(135deg, #ff3333, #8b0000);
+            color: white;
+            border: 2px solid white;
+            border-radius: 8px;
+            padding: 15px 35px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .botao-reclamacao:hover {
+            background: linear-gradient(135deg, #ff6666, #cc0000);
+            transform: scale(1.05);
+        }
+
+        /* FORMULÁRIO DE SOLICITAÇÃO DE ROLÊ */
+
+.formulario-role {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: left;
+}
+
+.formulario-role label {
+    font-weight: 700;
+}
+
+.formulario-role input[type="date"],
+.formulario-role select,
+.formulario-role textarea {
+    width: 100%;
+    padding: 14px;
+    border: 2px solid white;
+    border-radius: 8px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1rem;
+}
+
+.formulario-role textarea {
+    min-height: 130px;
+    resize: vertical;
+}
+
+        /* TRANSIÇÃO ENTRE TELAS */
+        #tela > * {
+            animation: aparecer 0.4s ease both;
+        }
+
+        @keyframes aparecer {
             from {
-                transform: translatex(100vw);
+                opacity: 0;
+                transform: translateY(15px);
             }
 
             to {
-                transform: translatex(-100vw);
+                opacity: 1;
+                transform: translateY(0);
             }
         }
 
-        .reiniciar {
-            margin-top: 35px;
-            background-color: #fcb903;
-            color: #f8f7f7;
-            border-color: #f8f6f6;
-            font-size: 0.9rem;
-        }
-
-        .imagem-final {
-            display: block;
-            width: auto;
-            height: auto;
-            max-width: 350px;
-            max-height: 45vh;
-            object-fit: contain;
-            margin: 20px auto;
-            border-radius: 12px;
-        }
-
+        /* BORDA DECORATIVA DA PÁGINA */
         body::before {
             content: "";
             position: fixed;
@@ -112,133 +209,31 @@
             z-index: 9999;
         }
 
-        /* Ajustes exclusivos da tela final */
-#tela:has(.final) {
-    width: 100%;
-    max-width: 100%;
-    min-width: 0;
-    overflow: hidden;
-    padding: 30px 0;
-}
+        .opcoes-interesse {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
 
-#tela:has(.final) .final {
-    position: relative;
-    left: 0;
-    margin: 20px 0;
-}
+        .opcoes-interesse label {
+            padding: 12px 16px;
+            border: 2px solid white;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
 
-#tela:has(.final) .imagem-final {
-    max-width: calc(100vw - 60px);
-}
+        .opcoes-interesse input[type="radio"] {
+            display: none;
+        }
 
-#tela:has(.final) .reiniciar {
-    position: relative;
-    z-index: 10000;
-}
-
-@media (max-width: 600px) {
-    #tela:has(.final) {
-        padding: 20px 0;
-    }
-
-    #tela:has(.final) .imagem-final {
-        max-width: calc(100vw - 40px);
-    }
-}
-
-.formulario-reclamacao {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    width: 100%;
-    max-width: 600px;
-    margin: 0 auto;
-}
-
-.campo-nome {
-    display: flex;
-    gap: 10px;
-    align-items: stretch;
-}
-
-.campo-nome input {
-    flex: 1;
-    min-width: 0;
-    width: 100%;
-    padding: 14px;
-    border: 2px solid white;
-    border-radius: 8px;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 1rem;
-}
-
-.botao-anonimo {
-    padding: 10px 14px;
-    font-size: 0.85rem;
-    white-space: normal;
-}
-
-@media (max-width: 600px) {
-    .campo-nome {
-        flex-direction: column;
-    }
-}
-
-.formulario-reclamacao label {
-    text-align: left;
-    font-weight: 700;
-}
-
-.formulario-reclamacao select,
-.formulario-reclamacao textarea {
-    width: 100%;
-    padding: 14px;
-    border: 2px solid white;
-    border-radius: 8px;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 1rem;
-}
-
-.formulario-reclamacao textarea {
-    min-height: 150px;
-    resize: vertical;
-}
-
-/* BOTÃO EXCLUSIVO DE RECLAMAÇÃO */
-.botao-reclamacao {
-    background: linear-gradient(135deg, #ff3333, #8b0000);
-    color: white;
-    border: 2px solid white;
-    border-radius: 8px;
-    padding: 15px 35px;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 1.2rem;
-    font-weight: 800;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.botao-reclamacao:hover {
-    background: linear-gradient(135deg, #ff6666, #cc0000);
-    transform: scale(1.05);
-}
-
-/* TRANSIÇÃO ENTRE TELAS */
-#tela > *:not(.final) {
-    animation: aparecer 0.4s ease both;
-}
-
-@keyframes aparecer {
-    from {
-        opacity: 0;
-        transform: translateY(15px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
+        .opcoes-interesse input[type="radio"]:checked + label {
+            background: #FF3CAC;
+            border-color: #FF3CAC;
+            color: white;
+            transform: scale(1.03);
+        }
 
     </style>
 </head>
@@ -248,29 +243,29 @@
     <main id="tela"></main>
 
     <script>
+        const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbztN028k65cUeiFn6jtwVWi8uXrYU4pXOXEWG5_wvJhzeWFJn6pBxkc1OdyrG37-iTE/exec";
 
-const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbxSG4kJDeafRHc3VwMnkSXEGrw7DBWse3olM4ofTl7I5-8ZkJxpEWR1G_qmOfDq0q9c/exec";
+        // MAPA DE SONS DOS BOTÕES
+        const sonsDosBotoes = {
+            "Preciso de ajuda! 🧡": "mp3/ajuda.mp3",
+            "Enviar carinho 🤍": "mp3/carinho.mp3",
+            "Fazer reclamação 😡": "mp3/reclamacao.mp3"
+        };
 
-// MAPA DE SONS DOS BOTÕES
-const sonsDosBotoes = {
-    "Preciso de ajuda! 🧡": "mp3/ajuda.mp3",
-    "Enviar carinho 🤍": "mp3/carinho.mp3",
-    "Fazer reclamação 😡": "mp3/reclamacao.mp3"
-};
+        // TOCAR O SOM DO BOTÃO CLICADO
+        function tocarSom(textoDoBotao) {
+            const arquivo = sonsDosBotoes[textoDoBotao];
 
-// TOCAR O SOM DO BOTÃO CLICADO
-function tocarSom(textoDoBotao) {
-    const arquivo = sonsDosBotoes[textoDoBotao];
+            if (!arquivo) {
+                return;
+            }
 
-    if (!arquivo) {
-        return;
-    }
+            const som = new Audio(arquivo);
+            som.play();
+        }
 
-    const som = new Audio(arquivo);
-    som.play();
-}
-
-        // NOSSA PRIMEIRA TELA
+        // MOSTRAR UMA TELA COM PERGUNTA E OPÇÕES
+        // Vamos manter esta função para reutilizá-la nas próximas etapas.
         function mostrarPergunta(texto, opcoes) {
             const tela = document.getElementById("tela");
 
@@ -286,134 +281,52 @@ function tocarSom(textoDoBotao) {
             `;
         }
 
-        // MOSTRA UMA MENSAGEM FINAL
-        function mostrarFinal(mensagem) {
+        // TELA DE RECLAMAÇÕES E SUGESTÕES
+        function telaReclamacao() {
             const tela = document.getElementById("tela");
 
-            let imagem = "";
-
-            if (mensagem === "Então me manda um pix: 15134150699") {
-                imagem = '<img src="imagens/lorran.png" alt="Imagem do Pix" class="imagem-final">';
-            }
-
             tela.innerHTML = `
-                <h1 class="final">${mensagem}</h1>
-                ${imagem}
-                <br>
-                <button class="reiniciar" onclick="telaInicial()">
-                    COMEÇAR DE NOVO
-                </button>
+                <h1>Central de Reclamações</h1>
+
+                <form class="formulario-reclamacao"
+                      onsubmit="enviarReclamacao(event)">
+
+                    <label for="intensidade">
+                        Intensidade da reclamação (1 a 5)
+                    </label>
+
+                    <select id="intensidade" required>
+                        <option value="">Selecione</option>
+                        <option value="1">1 - Leve</option>
+                        <option value="2">2 - Moderada</option>
+                        <option value="3">3 - Séria</option>
+                        <option value="4">4 - Muito séria</option>
+                        <option value="5">5 - ABSURDA</option>
+                    </select>
+
+                    <label for="reclamacao">Sua reclamação</label>
+
+                    <textarea
+                        id="reclamacao"
+                        placeholder="Escreva sua reclamação..."
+                        required
+                    ></textarea>
+
+                    <button type="submit">Enviar Reclamação</button>
+
+                    <button type="button" onclick="telaInicial()">
+                        Voltar
+                    </button>
+                </form>
             `;
         }
 
-        // PERGUNTA INICIAL
-        function inicio() {
-            mostrarPergunta(
-                "O problema é meu, ou é SEU?",
-                [
-                    { texto: "1 - Seu", acao: "problemaMeu()" },
-                    { texto: "2 - Meu", acao: "problemaSeu()" },
-                    { texto: "3 - Não Existe problema", acao: "problemaNaoExiste()" }
-                ]
-            );
-        }
-
-        // CAMINHO: O PROBLEMA É MEU
-        function problemaMeu() {
-            mostrarPergunta("Posso Resolver?", [
-                { texto: "SIM", acao: "mostrarFinal('ENTÃO VOU RESOLVER')" },
-                { texto: "NÃO", acao: "mostrarFinal('ENTÃO NÃO LIGO')" }
-            ]);
-        }
-
-        // CAMINHO: O PROBLEMA É SEU
-        function problemaSeu() {
-            mostrarPergunta("Eu gosto de você?", [
-                { texto: "SIM", acao: "possoResolver()" },
-                { texto: "NÃO", acao: "mostrarFinal('ENTÃO NÃO LIGO')" }
-            ]);
-        }
-
-        // CAMINHO: NÃO EXISTE PROBLEMA
-        function problemaNaoExiste() {
-            mostrarPergunta("Você só é curioso(a)", [
-                { texto: "SIM", acao: "mostrarFinal('Então me manda um pix: 15134150699')" },
-            ]);
-        }
+        // ENVIAR RECLAMAÇÃO PARA O GOOGLE SHEETS
         
-
-        // SEGUNDA PERGUNTA DO CAMINHO "SEU"
-        function possoResolver() {
-            mostrarPergunta("Eu posso resolver?", [
-                { texto: "SIM", acao: "mostrarFinal('ENTÃO VOU TE AJUDAR')" },
-                { texto: "NÃO", acao: "mostrarFinal('ENTÃO NÃO LIGO')" }
-            ]);
-        }
-
-        function telaReclamacao() {
-    const tela = document.getElementById("tela");
-
-    tela.innerHTML = `
-        <h1>Central de Reclamações</h1>
-
-        <form class="formulario-reclamacao"
-              onsubmit="enviarReclamacao(event)">
-
-              <label for="nomeReclamacao">Seu nome</label>
-
-<div class="campo-nome">
-    <input
-        type="text"
-        id="nomeReclamacao"
-        placeholder="Digite seu nome"
-        required
-    >
-
-    <button
-        type="button"
-        class="botao-anonimo"
-        onclick="enviarComoAnonimo()"
-    >
-        Enviar como anônimo
-    </button>
-</div>
-
-            <label for="intensidade">
-                Intensidade da reclamação (1 a 5)
-            </label>
-
-            <select id="intensidade" required>
-                <option value="">Selecione</option>
-                <option value="1">1 - Leve</option>
-                <option value="2">2 - Moderada</option>
-                <option value="3">3 - Séria</option>
-                <option value="4">4 - Muito séria</option>
-                <option value="5">5 - ABSURDA</option>
-            </select>
-
-            <label for="reclamacao">Sua reclamação</label>
-
-            <textarea id="reclamacao"
-                      placeholder="Escreva sua reclamação..."
-                      required></textarea>
-
-            <button type="submit">Enviar Reclamação</button>
-
-            <button type="button" onclick="telaInicial()">
-                Voltar
-            </button>
-        </form>
-    `;
-}
-
-function enviarComoAnonimo() {
-    document.getElementById("nomeReclamacao").value = "Arregão(ona)";
-}
-
 async function enviarReclamacao(event) {
     event.preventDefault();
 
-    const nome = document.getElementById("nomeReclamacao").value.trim();
+    const nome = localStorage.getItem("nomeUsuario");
     const reclamacao = document.getElementById("reclamacao").value.trim();
     const intensidade = document.getElementById("intensidade").value;
 
@@ -434,6 +347,7 @@ async function enviarReclamacao(event) {
                 "Content-Type": "text/plain;charset=utf-8"
             },
             body: JSON.stringify({
+                tipo: "reclamacao",
                 nome: nome,
                 reclamacao: reclamacao,
                 intensidade: intensidade
@@ -442,7 +356,6 @@ async function enviarReclamacao(event) {
 
         alert("Reclamação enviada! Senta lá e godrink.");
 
-        document.getElementById("nomeReclamacao").value = "";
         document.getElementById("reclamacao").value = "";
         document.getElementById("intensidade").value = "";
 
@@ -456,32 +369,259 @@ async function enviarReclamacao(event) {
     }
 }
 
-function telaInicial() {
+
+
+function telaSolicitarRole() {
     const tela = document.getElementById("tela");
 
     tela.innerHTML = `
+
         <h1>
-            Bem vindo(a) a central de amizade do Lorran. Como podemos te ajudar?
+            Sim, vamo marcar!
         </h1>
 
-        <div class="botoes">
-            <button onclick="tocarSom('Preciso de ajuda! 🧡'); inicio()">
-                Preciso de ajuda! 🧡
-            </button>
+        <form class="formulario-role" onsubmit="enviarRole(event)">
 
-            <button onclick="tocarSom('Enviar carinho 🤍'); mostrarFinal('Então me manda um pix: 15134150699')">
-                Enviar carinho 🤍
-            </button>
+            <label for="dataRole">Quando será o rolê?</label>
 
-            <button class="botao-reclamacao" onclick="tocarSom('Fazer reclamação 😡'); telaReclamacao()">
-                Fazer reclamação 😡
-            </button>
+            <input
+                type="date"
+                id="dataRole"
+                required
+            >
+
+            <label for="categoriaRole">Qual será o tipo de rolê?</label>
+
+            <select id="categoriaRole" required>
+                <option value="">Selecione uma categoria</option>
+                <option value="Rolê Caseiro">Rolê Caseiro</option>
+                <option value="Jogatina Caseira">Jogatina Caseira</option>
+                <option value="Bar & Restaurante">Bar & Restaurante</option>
+                <option value="Esporte & Diversão">Esporte & Diversão</option>
+                <option value="Viagem">Viagem</option>
+                <option value="Churrasco">Churrasco</option>
+                <option value="Cinema">Cinema</option>
+            </select>
+
+            <label>Qual o seu nível de animação?</label>
+
+            <div class="opcoes-interesse">
+
+                <input
+                    type="radio"
+                    id="interesse1"
+                    name="nivelInteresse"
+                    value="1"
+                    required
+                >
+                <label for="interesse1">1 - Podíamos sair</label>
+
+                <input
+                    type="radio"
+                    id="interesse2"
+                    name="nivelInteresse"
+                    value="2"
+                >
+                <label for="interesse2">2 - Tô animando</label>
+
+                <input
+                    type="radio"
+                    id="interesse3"
+                    name="nivelInteresse"
+                    value="3"
+                >
+                <label for="interesse3">3 - A gente vai vendo</label>
+
+                <input
+                    type="radio"
+                    id="interesse4"
+                    name="nivelInteresse"
+                    value="4"
+                >
+                <label for="interesse4">4 - Vamos marcar logo!</label>
+
+                <input
+                    type="radio"
+                    id="interesse5"
+                    name="nivelInteresse"
+                    value="5"
+                >
+                <label for="interesse5">5 - PRECISAMOS URGENTE!</label>
+
+            </div>
+
+            <label for="descricaoRole">Qual será o rolê?</label>
+
+            <textarea
+                id="descricaoRole"
+                placeholder="Ex: Vamos marcar uma sinuca no Sabão..."
+                required
+            ></textarea>
+
+            <div class="botoes">
+
+    <button type="submit">
+        Enviar solicitação
+    </button>
+
+    <button type="button" onclick="telaInicial()">
+        Voltar
+    </button>
+
         </div>
+
+        </form>
     `;
 }
 
-// INICIA O PROGRAMA
-telaInicial();
+
+async function enviarRole(event) {
+    event.preventDefault();
+
+    const nome = localStorage.getItem("nomeUsuario");
+    const data = document.getElementById("dataRole").value;
+    const categoria = document.getElementById("categoriaRole").value;
+
+    const interesseSelecionado = document.querySelector('input[name="nivelInteresse"]:checked');
+    const interesse = interesseSelecionado ? interesseSelecionado.value : "";
+
+    const descricao = document.getElementById("descricaoRole").value.trim();
+
+    if (!nome || !data || !categoria || !interesse || !descricao) {
+        alert("Preencha todos os campos antes de enviar!");
+        return;
+    }
+
+    const botao = event.submitter;
+
+    botao.disabled = true;
+    botao.textContent = "Enviando...";
+
+    try {
+        await fetch(URL_SCRIPT, {
+            method: "POST",
+            mode: "no-cors",
+            headers: {
+                "Content-Type": "text/plain;charset=utf-8"
+            },
+            body: JSON.stringify({
+                tipo: "role",
+                nome: nome,
+                data: data,
+                categoria: categoria,
+                interesse: interesse,
+                descricao: descricao
+            })
+        });
+
+        alert("Solicitação enviada! Agora é esperar a galera animar! 🎉");
+
+    } catch (erro) {
+        alert("Não foi possível enviar sua solicitação. Tente novamente.");
+        console.error(erro);
+
+    } finally {
+        botao.disabled = false;
+        botao.textContent = "Enviar solicitação";
+    }
+}
+
+
+        function telaAmigoDoMes() {
+            const tela = document.getElementById("tela");
+            tela.innerHTML = `
+            <h1> 
+                Teste Amigo do Mês
+            </h1>
+
+            <div class="botoes">
+                <button onclick= "telaInicial()">
+                    Voltar
+                    </button>
+            </div>    
+            ` ;
+        }
+
+        // MENU PRINCIPAL ATUAL
+        // As opções de rolê e amigo do mês serão programadas nas próximas etapas.
+        function telaInicial() {
+            const tela = document.getElementById("tela");
+            const nomeSalvo = localStorage.getItem("nomeUsuario");
+            tela.innerHTML = `
+                <h1 class="texto-gradiente"> 
+                    Central de amizade do GLPC (Grupo Legal Pra Caramba).
+                </h1> 
+
+                <h2> Bem vindo(a) ${nomeSalvo}. 
+                
+                    </h2>
+
+                <div class="botoes">
+                    <button onclick="tocarSom('Preciso de ajuda! 🧡'); telaSolicitarRole()">
+                        Solicitar rolê! 🧡
+                    </button>
+
+                    <button onclick="tocarSom('Enviar carinho 🤍'); telaAmigoDoMes()">
+                        Amigo do mês 🤍
+                    </button>
+
+                    <button class="botao-reclamacao"
+                            onclick="tocarSom('Fazer reclamação 😡'); telaReclamacao()">
+                        Fazer reclamação 😡
+                    </button>
+                </div>
+            `;
+        }
+
+        function telaIdentificacao () {
+            const tela = document.getElementById("tela");
+
+            tela.innerHTML = `
+                 <h1> Bem-vindo(a) ao GLPC! Como podemos te chamar? </h1>
+
+                 <div class="insert">
+                    
+                <input type="text" id="nomeUsuario" placeholder="Digite seu nome">
+
+                <button onclick= "entrarNoSite()">
+                    Entrar
+                </button>
+
+                <button onclick="entrarAnonimamente()">
+                    Entrar anônimo 👀
+                </button>    
+                 
+                </div>  
+            `      
+
+        }
+
+        function entrarNoSite (){
+            const nome = document.getElementById("nomeUsuario").value.trim();
+
+            if (nome === "") {
+    alert("Digite seu nome!");
+        } else {
+    localStorage.setItem("nomeUsuario", nome);
+    telaInicial()
+        }
+
+        }
+
+        function entrarAnonimamente() {
+            localStorage.setItem("nomeUsuario", "Arregão(ona)");
+            telaInicial();
+    
+        }
+
+        // INICIA O SITE
+        const nomeSalvo = localStorage.getItem("nomeUsuario");
+
+if (nomeSalvo === null) {
+    telaIdentificacao();
+} else {
+    telaInicial();
+}
     </script>
 
 </body>
