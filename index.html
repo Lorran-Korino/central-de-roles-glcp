@@ -235,6 +235,29 @@
             transform: scale(1.03);
         }
 
+        .btn-trocar-usuario {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+
+    background-color: #444;
+    color: #fff;
+
+    padding: 8px 12px;
+    font-size: 12px;
+
+    border: none;
+    border-radius: 8px;
+
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-trocar-usuario:hover {
+    background-color: #666;
+    transform: scale(1.05);
+}
+
     </style>
 </head>
 
@@ -542,6 +565,11 @@ async function enviarRole(event) {
             ` ;
         }
 
+        function trocarUsuario() {
+            localStorage.removeItem("nomeUsuario");
+            telaIdentificacao();
+        }
+
         // MENU PRINCIPAL ATUAL
         // As opções de rolê e amigo do mês serão programadas nas próximas etapas.
         function telaInicial() {
@@ -570,6 +598,11 @@ async function enviarRole(event) {
                         Fazer reclamação 😡
                     </button>
                 </div>
+
+                <button class="btn-trocar-usuario" onclick="trocarUsuario()">
+    Trocar usuário
+</button>
+
             `;
         }
 
