@@ -46,6 +46,31 @@
             margin-bottom: 40px;
         }
 
+/* BOTÕES DA TELA DE VOTAÇÃO */
+.acoes-votacao {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    margin-top: 25px;
+}
+
+.acoes-votacao button {
+    width: 100%;
+    max-width: 255px;
+}
+
+/* BOTÃO VOLTAR CINZA */
+.btn-voltar {
+    background: linear-gradient(135deg, #05dd71, #dbdf0a) !important;
+    border: 2px solid rgba(255, 255, 255, 0.6) !important;
+    color: rgb(10, 10, 10);
+}
+
+.btn-voltar:hover {
+    background: linear-gradient(135deg, #888, #555) !important;
+}
+
         .botoes {
             display: flex;
             justify-content: center;
@@ -471,6 +496,43 @@ body::before {
     }
 }
 
+/* CARDS DOS PRÓXIMOS ROLÊS */
+.card-role {
+    background: rgba(255, 255, 255, 0.18);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    border-radius: 16px;
+    padding: 20px;
+    margin: 20px auto;
+    text-align: center;
+    max-width: 600px;
+    transition: 0.3s;
+}
+
+.card-role img {
+    width: 100%;
+    height: 100px;
+    display: block;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.card-role:hover {
+    transform: scale(1.02);
+    background: rgba(255, 255, 255, 0.28);
+    box-shadow: 0 5px 20px rgba(255, 255, 255, 0.2);
+}
+
+/* CONTADORES DOS PRÓXIMOS ROLÊS */
+.contadores-role {
+    display: flex;
+    justify-content: center;
+    gap: 35px;
+    margin: 15px 0;
+    font-size: 1.2rem;
+    font-weight: 800;
+}
+
     </style>
 </head>
 
@@ -552,9 +614,20 @@ function telaVotacao() {
 
             </div>
 
-            <button onclick="votarAmigo()">Votar</button>
+            <div class="acoes-votacao">
 
-            <button onclick="telaInicial()">Voltar</button>
+    <button onclick="votarAmigo()">
+        Enviar voto!
+    </button>
+
+    <button
+        class="btn-voltar"
+        onclick="telaInicial()"
+    >
+        Voltar
+    </button>
+
+</div>
 
         </div>
 
@@ -633,7 +706,7 @@ function telaVotacao() {
 
                     <button type="submit">Enviar Reclamação</button>
 
-                    <button type="button" onclick="telaInicial()">
+                    <button type="button" class="btn-voltar" onclick="telaInicial()">
                         Voltar
                     </button>
                 </form>
@@ -675,6 +748,8 @@ async function enviarReclamacao(event) {
 
         alert("Reclamação enviada! Senta lá e godrink.");
 
+        event.target.reset();
+
         document.getElementById("reclamacao").value = "";
         document.getElementById("intensidade").value = "";
 
@@ -688,7 +763,89 @@ async function enviarReclamacao(event) {
     }
 }
 
+function telaProximosRoles() {
+    const tela = document.getElementById("tela");
 
+    const roles = [
+        {
+            id: "ROLE-001",
+            categoria: "Churrasco",
+            organizador: "Pedro",
+            data: "02/12/2026",
+            imagem: "churrasco.jpg",
+            descricao: "Aniversário!",
+            dentro: 2,
+            fora: 1
+        },
+        {
+            id: "ROLE-002",
+            categoria: "Jogatina Caseira",
+            organizador: "Lorran",
+            data: "04/12/2026",
+            imagem: "jogatinacaseira.jpg",
+            descricao: "Noite de jogos com a galera!",
+            dentro: 3,
+            fora: 4
+        },
+        {
+            id: "ROLE-003",
+            categoria: "Karaokê",
+            organizador: "Luiza",
+            data: "18/12/2026",
+            imagem: "karaoke.jpg",
+            descricao: "Vamos soltar a voz!",
+            dentro: 2,
+            fora: 1
+        }
+    ];
+
+    let cards = "";
+
+    roles.forEach(role => {
+
+        cards += `
+            <div class="card-role">
+                <img src="imagens/categorias/${role.imagem}" alt="${role.categoria}">
+                <h2>${role.categoria}</h2>
+                <p>Organizado por: ${role.organizador}</p>
+                <p>📅 ${role.data}</p>
+                <p>${role.descricao}</p>
+
+                <div class="contadores-role">
+                  <span>🙋 ${role.dentro}</span>
+                  <span>🙅 ${role.fora}</span>
+                </div>
+
+                <div class="botoes-role">
+
+                  <button onclick="responderRole('${role.id}', 'Tô nessa')">
+                    Tô nessa!
+                  </button>
+
+                  <button onclick="responderRole('${role.id}', 'Tô fora')">
+                    Tô fora!
+                  </button>
+
+                </div>
+            </div>
+        `;
+
+    });
+
+    tela.innerHTML = `
+        <h1>Próximos Rolês 🎉</h1>
+
+        <p>Aqui vamos encontrar os próximos rolês da galera!</p>
+
+        <div id="listaRoles">
+            ${cards}
+        </div>
+
+        <button class="btn-voltar" onclick="telaInicial()">
+            Voltar
+        </button>
+    `;
+}
 
 function telaSolicitarRole() {
     const tela = document.getElementById("tela");
@@ -720,6 +877,8 @@ function telaSolicitarRole() {
                 <option value="Viagem">Viagem</option>
                 <option value="Churrasco">Churrasco</option>
                 <option value="Cinema">Cinema</option>
+                <option value="Karaokê">Karaokê</option>
+                <option value="Rock & Roll">Rock & Roll</option>
             </select>
 
             <label>Qual o seu nível de animação?</label>
@@ -783,7 +942,7 @@ function telaSolicitarRole() {
         Enviar solicitação
     </button>
 
-    <button type="button" onclick="telaInicial()">
+    <button type="button" class="btn-voltar" onclick="telaInicial()">
         Voltar
     </button>
 
@@ -816,6 +975,14 @@ async function enviarRole(event) {
     botao.disabled = true;
     botao.textContent = "Enviando...";
 
+    // TOCAR ÁUDIO AO ENVIAR ROLÊ
+const somRole = new Audio("mp3/cassinao.mp3");
+somRole.volume = 0.3;
+
+somRole.play().catch(erro => {
+    console.log("Não foi possível reproduzir o áudio:", erro);
+});
+
     try {
         await fetch(URL_SCRIPT, {
             method: "POST",
@@ -834,6 +1001,8 @@ async function enviarRole(event) {
         });
 
         alert("Solicitação enviada! Agora é esperar a galera animar! 🎉");
+
+        event.target.reset();
 
     } catch (erro) {
         alert("Não foi possível enviar sua solicitação. Tente novamente.");
@@ -898,29 +1067,12 @@ async function votarAmigo() {
     }
 }
 
-
-        function telaAmigoDoMes() {
-            const tela = document.getElementById("tela");
-            tela.innerHTML = `
-            <h1> 
-                Teste Amigo do Mês
-            </h1>
-
-            <div class="botoes">
-                <button onclick= "telaInicial()">
-                    Voltar
-                    </button>
-            </div>    
-            ` ;
-        }
-
         function trocarUsuario() {
             localStorage.removeItem("nomeUsuario");
             telaIdentificacao();
         }
 
         // MENU PRINCIPAL ATUAL
-        // As opções de rolê e amigo do mês serão programadas nas próximas etapas.
         function telaInicial() {
             const tela = document.getElementById("tela");
             const nomeSalvo = localStorage.getItem("nomeUsuario");
@@ -952,6 +1104,10 @@ async function votarAmigo() {
 
                     <button onclick="tocarSom('Enviar carinho 🤍'); telaVotacao()">
                         Amigo do mês 🤍
+                    </button>
+
+                    <button onclick="telaProximosRoles()">
+                        Próximos Rolês 🎉
                     </button>
 
                     <button class="botao-reclamacao"
