@@ -258,6 +258,113 @@
     transform: scale(1.05);
 }
 
+.card-bloqueado {
+    opacity: 0.45;
+    filter: grayscale(100%);
+    cursor: not-allowed;
+}
+
+/* GRADE DOS PARTICIPANTES */
+.lista-participantes {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 15px;
+
+    width: 100%;
+    max-width: 600px;
+    margin: 30px auto;
+}
+
+/* CARD INDIVIDUAL */
+.card-participante {
+    width: 100%;
+    min-width: 0;
+}
+
+/* FOTO DO PARTICIPANTE */
+.card-participante img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 12px;
+}
+
+/* CELULAR */
+@media (max-width: 600px) {
+    .lista-participantes {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+    }
+}
+
+
+/* CARD DOS PARTICIPANTES */
+.card-participante {
+    background: rgba(255, 255, 255, 0.18);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    border-radius: 14px;
+    padding: 10px;
+    transition: 0.25s;
+}
+
+/* ÁREA CLICÁVEL */
+.opcao-participante {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+/* ESCONDE O RADIO ORIGINAL */
+.opcao-participante input {
+    position: absolute;
+    opacity: 0;
+}
+
+/* NOME */
+.opcao-participante h3 {
+    margin: 5px 0;
+    font-size: 0.95rem;
+}
+
+/* BOTÃO VISUAL DE SELEÇÃO */
+.seletor-voto {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid white;
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-size: 0.75rem;
+    font-weight: bold;
+}
+
+/* CARD SELECIONADO */
+.card-participante:has(input:checked) {
+    background: #ff3cac;
+    border-color: white;
+    transform: scale(1.04);
+    box-shadow: 0 0 15px rgba(255,255,255,0.5);
+}
+
+/* TEXTO DO CARD SELECIONADO */
+.card-participante:has(input:checked) .seletor-voto {
+    background: white;
+    color: #c926d8;
+}
+
+/* CARD BLOQUEADO */
+.card-bloqueado {
+    opacity: 0.45;
+    filter: grayscale(100%);
+    cursor: not-allowed;
+}
+
+.card-bloqueado .opcao-participante {
+    cursor: not-allowed;
+}
+
+
     </style>
 </head>
 
@@ -267,6 +374,89 @@
 
     <script>
         const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbztN028k65cUeiFn6jtwVWi8uXrYU4pXOXEWG5_wvJhzeWFJn6pBxkc1OdyrG37-iTE/exec";
+
+        const participantes = [
+    { nome: "Marcelo", foto: "imagens/marcelo.jpg" },
+    { nome: "Bruna", foto: "imagens/bruna.jpg" },
+    { nome: "Lorran", foto: "imagens/lorran.jpg" },
+    { nome: "Luiza", foto: "imagens/luiza.jpg" },
+    { nome: "Paloma", foto: "imagens/paloma.jpg" },
+    { nome: "Arthur", foto: "imagens/arthur.jpg" },
+    { nome: "Tomás", foto: "imagens/tomas.jpg" },
+    { nome: "Matheus", foto: "imagens/matheus.jpg" }
+];
+
+// GERAR CARDS VOTAÇÃO AMIGOS
+
+function gerarCardsParticipantes() {
+
+    const container = document.getElementById("listaParticipantes");
+
+    container.innerHTML = "";
+
+    const nomeUsuario = localStorage.getItem("nomeUsuario");
+
+    participantes.forEach(participante => {
+
+        const bloqueado = nomeUsuario.trim().toLowerCase() === participante.nome.trim().toLowerCase();
+
+        
+const card = `
+    <div class="card-participante ${bloqueado ? "card-bloqueado" : ""}">
+
+        <label class="opcao-participante">
+
+            <input
+                type="radio"
+                name="votoAmigo"
+                value="${participante.nome}"
+                ${bloqueado ? "disabled" : ""}
+            >
+
+            <img src="${participante.foto}" alt="${participante.nome}">
+
+            <h3>${participante.nome}</h3>
+
+            <span class="seletor-voto">Selecionar</span>
+
+        </label>
+
+    </div>
+`;
+
+
+        container.innerHTML += card;
+
+    });
+
+}
+
+
+function telaVotacao() {
+
+    document.getElementById("tela").innerHTML = `
+
+        <div class="container-votacao">
+
+            <h1>Vote em quem fez o grupo feliz neste mês!</h1>
+
+            <p>Escolha quem merece ser o Amigo do Mês.</p>
+
+            <div id="listaParticipantes" class="lista-participantes">
+
+            </div>
+
+            <button onclick="votarAmigo()">Votar</button>
+
+            <button onclick="telaInicial()">Voltar</button>
+
+        </div>
+
+    `;
+
+    gerarCardsParticipantes();
+
+}
 
         // MAPA DE SONS DOS BOTÕES
         const sonsDosBotoes = {
@@ -550,6 +740,59 @@ async function enviarRole(event) {
 }
 
 
+async function votarAmigo() {
+
+    const nomeUsuario = localStorage.getItem("nomeUsuario");
+
+    const selecionado = document.querySelector(
+        'input[name="votoAmigo"]:checked'
+    );
+
+    if (!selecionado) {
+        alert("Escolha alguém para votar!");
+        return;
+    }
+
+    const indicado = selecionado.value;
+
+    const botao = document.querySelector(
+        '.container-votacao button[onclick="votarAmigo()"]'
+    );
+
+    botao.disabled = true;
+    botao.textContent = "Enviando voto...";
+
+    try {
+
+        await fetch(URL_SCRIPT, {
+            method: "POST",
+            mode: "no-cors",
+            headers: {
+                "Content-Type": "text/plain;charset=utf-8"
+            },
+            body: JSON.stringify({
+                tipo: "amigoMes",
+                nome: nomeUsuario,
+                indicado: indicado
+            })
+        });
+
+        alert("Voto enviado! Obrigado por participar! 🤍");
+
+    } catch (erro) {
+
+        alert("Não foi possível enviar seu voto. Tente novamente.");
+        console.error(erro);
+
+    } finally {
+
+        botao.disabled = false;
+        botao.textContent = "Votar";
+
+    }
+}
+
+
         function telaAmigoDoMes() {
             const tela = document.getElementById("tela");
             tela.innerHTML = `
@@ -589,7 +832,7 @@ async function enviarRole(event) {
                         Solicitar rolê! 🧡
                     </button>
 
-                    <button onclick="tocarSom('Enviar carinho 🤍'); telaAmigoDoMes()">
+                    <button onclick="tocarSom('Enviar carinho 🤍'); telaVotacao()">
                         Amigo do mês 🤍
                     </button>
 
