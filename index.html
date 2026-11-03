@@ -198,7 +198,7 @@
             }
         }
 
-        /* BORDA DECORATIVA DA PÁGINA */
+       /* BORDA DECORATIVA DA PÁGINA */
 body {
     position: relative;
 }
@@ -368,6 +368,108 @@ body::before {
     cursor: not-allowed;
 }
 
+/* CABEÇALHO GLPC */
+.cabecalho-glpc {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    width: 100%;
+    margin: 20px auto 35px;
+}
+
+/* LOGO */
+.logo-glpc {
+    width: clamp(180px, 60%, 480px);
+    height: auto;
+    object-fit: contain;
+}
+
+/* FOTO REDONDA DO GRUPO */
+.foto-grupo {
+    width: clamp(75px, 18vw, 120px);
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid white;
+    box-shadow: 0 0 12px rgba(255, 255, 255, 0.4);
+    flex-shrink: 0;
+}
+
+/* AJUSTE PARA CELULAR */
+@media (max-width: 480px) {
+    .cabecalho-glpc {
+        gap: 10px;
+    }
+
+    .logo-glpc {
+        width: 65%;
+    }
+}
+
+/* ÁREA DE IDENTIFICAÇÃO */
+.insert {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    width: 100%;
+    max-width: 520px;
+    margin: 30px auto;
+    align-items: center;
+}
+
+/* CAMPO DE NOME */
+.insert input {
+    grid-column: 1 / -1;
+    width: 100%;
+    padding: 16px 20px;
+
+    background: rgba(255, 255, 255, 0.92);
+    color: #333;
+
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    border-radius: 14px;
+
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1rem;
+
+    outline: none;
+    transition: 0.25s;
+}
+
+/* EFEITO AO CLICAR NO CAMPO */
+.insert input:focus {
+    border-color: #ff3cac;
+    box-shadow: 0 0 12px rgba(255, 60, 172, 0.5);
+    background: white;
+}
+
+/* TEXTO DO PLACEHOLDER */
+.insert input::placeholder {
+    color: #999;
+}
+
+/* BOTÕES DA IDENTIFICAÇÃO */
+.insert button {
+    width: 100%;
+    min-width: 0;
+    padding: 15px 10px;
+    font-size: 1rem;
+    border-radius: 12px;
+}
+
+/* AJUSTE PARA CELULARES */
+@media (max-width: 480px) {
+    .insert {
+        max-width: 360px;
+        gap: 10px;
+    }
+
+    .insert button {
+        font-size: 0.85rem;
+        padding: 14px 8px;
+    }
+}
 
     </style>
 </head>
@@ -823,9 +925,21 @@ async function votarAmigo() {
             const tela = document.getElementById("tela");
             const nomeSalvo = localStorage.getItem("nomeUsuario");
             tela.innerHTML = `
-                <h1 class="texto-gradiente"> 
-                    Central de amizade do GLPC (Grupo Legal Pra Caramba).
-                </h1> 
+                <div class="cabecalho-glpc">
+
+    <img
+        src="imagens/logoGLPC.png"
+        alt="Central de amizade GLPC"
+        class="logo-glpc"
+    >
+
+    <img
+        src="imagens/imagemgrupo.jpg"
+        alt="Foto do grupo GLPC"
+        class="foto-grupo"
+    >
+
+</div> 
 
                 <h2> Bem vindo(a) ${nomeSalvo}. 
                 
@@ -857,7 +971,23 @@ async function votarAmigo() {
             const tela = document.getElementById("tela");
 
             tela.innerHTML = `
-                 <h1> Bem-vindo(a) ao GLPC! Como podemos te chamar? </h1>
+<div class="cabecalho-glpc">
+
+    <img
+        src="imagens/logoGLPC.png"
+        alt="Central de amizade GLPC"
+        class="logo-glpc"
+    >
+
+    <img
+        src="imagens/imagemgrupo.jpg"
+        alt="Foto do grupo GLPC"
+        class="foto-grupo"
+    >
+
+</div> 
+
+                 <h1> Bem-vindo(a), zé ruela! Quem é ocê mermo? </h1>
 
                  <div class="insert">
                     
