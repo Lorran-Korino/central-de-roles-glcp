@@ -60,6 +60,18 @@
     max-width: 255px;
 }
 
+.ampulheta-carregando {
+    width: 22px;
+    height: 22px;
+    animation: girar-ampulheta 1.2s linear infinite;
+}
+
+@keyframes girar-ampulheta {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
 /* BOTÃO VOLTAR CINZA */
 .btn-voltar {
     background: linear-gradient(135deg, #05dd71, #dbdf0a) !important;
@@ -963,16 +975,16 @@ function telaProximosRoles(roles) {
                 <div class="botoes-role">
 
                     <button
-                        class="${respostaUsuario === 'Tô nessa' ? 'voto-selecionado nessa' : ''}"
-                        onclick="responderRole('${role.id}', 'Tô nessa')">
-                        Tô nessa!
-                    </button>
+    class="${respostaUsuario === 'Tô nessa' ? 'voto-selecionado nessa' : ''}"
+    onclick="responderRole(event, '${role.id}', 'Tô nessa')">
+    Tô nessa!
+</button>
 
-                    <button
-                        class="${respostaUsuario === 'Tô fora' ? 'voto-selecionado fora' : ''}"
-                        onclick="responderRole('${role.id}', 'Tô fora')">
-                        Tô fora!
-                    </button>
+                   <button
+    class="${respostaUsuario === 'Tô fora' ? 'voto-selecionado fora' : ''}"
+    onclick="responderRole(event, '${role.id}', 'Tô fora')">
+    Tô fora!
+</button>
 
                 </div>
 
@@ -996,15 +1008,30 @@ function telaProximosRoles(roles) {
 }
 
 
-async function responderRole(idRole, resposta) {
+async function responderRole(event, idRole, resposta) {
 
     const nome = localStorage.getItem("nomeUsuario");
+
+    const botaoClicado = event.currentTarget;
 
     if (!nome || nome === "Arregão(ona)") {
     alert("Anônimos não podem participar dos rolês! Identifique-se primeiro.");
     return;
     }
 
+    const textoOriginal = botaoClicado.innerHTML;
+
+botaoClicado.disabled = true;
+
+botaoClicado.innerHTML = `
+    <svg class="ampulheta-carregando" viewBox="0 0 24 24"
+         fill="none" stroke="currentColor" stroke-width="2"
+         stroke-linecap="round" stroke-linejoin="round">
+        <path d="M6 2h12M6 22h12M7 2c0 5 5 5 5 10s-5 5-5 10"/>
+        <path d="M17 2c0 5-5 5-5 10s5 5 5 10"/>
+    </svg>
+`;
+    
     const dados = {
     tipo: "votoRole",
     nome: nome,
@@ -1022,59 +1049,65 @@ try {
         body: JSON.stringify(dados)
     });
 
-    buscarRoles();
+    buscarRoles(false);
 
 } catch (erro) {
+    botaoClicado.innerHTML = textoOriginal;
+    botaoClicado.disabled = false;
+
     alert("Erro ao enviar sua resposta. Tente novamente.");
     console.error(erro);
 }
 
 }
 
-function buscarRoles() {
+
+function buscarRoles(mostrarCarregamento = true) {
 
     const tela = document.getElementById("tela");
 
-tela.innerHTML = `
-    <h1>Próximos Rolês 🎉</h1>
-    <p>Aqui vamos encontrar os próximos rolês da galera!</p>
+    if (mostrarCarregamento) {
+        tela.innerHTML = `
+            <h1>Próximos Rolês 🎉</h1>
+            <p>Aqui vamos encontrar os próximos rolês da galera!</p>
 
-    <div class="carregando-roles">
-        <div class="icone-carregando">⟳</div>
-        <h2>Carregando rolês...</h2>
-        <p>Estamos buscando os próximos encontros da galera!</p>
-    </div>
-`;
+            <div class="carregando-roles">
+                <div class="icone-carregando">⟳</div>
+                <h2>Carregando rolês...</h2>
+                <p>Estamos buscando os próximos encontros da galera!</p>
+            </div>
+        `;
+    }
 
     const nome = localStorage.getItem("nomeUsuario") || "";
     const url = `${URL_SCRIPT}?nome=${encodeURIComponent(nome)}`;
 
     fetch(url)
-    .then(resposta => resposta.json())
-    .then(dados => {
-    if (dados.sucesso) {
-        telaProximosRoles(dados.roles);
-    }
-})
-    .catch(erro => {
-    console.error("Erro ao buscar os rolês:", erro);
+        .then(resposta => resposta.json())
+        .then(dados => {
+            if (dados.sucesso) {
+                telaProximosRoles(dados.roles);
+            }
+        })
+        .catch(erro => {
+            console.error("Erro ao buscar os rolês:", erro);
 
-    tela.innerHTML = `
-        <h1>Ops! 😕</h1>
-        <p>Não conseguimos carregar os rolês.</p>
-        <p>Verifique sua conexão e tente novamente.</p>
+            tela.innerHTML = `
+                <h1>Ops! 😕</h1>
+                <p>Não conseguimos carregar os rolês.</p>
+                <p>Verifique sua conexão e tente novamente.</p>
 
-        <button onclick="buscarRoles()">
-            Tentar novamente
-        </button>
+                <button onclick="buscarRoles()">
+                    Tentar novamente
+                </button>
 
-        <button class="btn-voltar" onclick="telaInicial()">
-            Voltar ao menu
-        </button>
-    `;
-});
-
+                <button class="btn-voltar" onclick="telaInicial()">
+                    Voltar ao menu
+                </button>
+            `;
+        });
 }
+
 
 function telaSolicitarRole() {
 
