@@ -161,9 +161,9 @@
             color: white;
             border: 2px solid white;
             border-radius: 8px;
-            padding: 15px 35px;
+            padding: 10px 30px;
             font-family: 'Montserrat', sans-serif;
-            font-size: 1.2rem;
+            font-size: 1.0rem;
             font-weight: 800;
             cursor: pointer;
             transition: 0.3s;
@@ -506,6 +506,7 @@ body::before {
     text-align: center;
     max-width: 600px;
     transition: 0.3s;
+    overflow: hidden;
 }
 
 .card-role img {
@@ -517,10 +518,98 @@ body::before {
     margin-bottom: 10px;
 }
 
+.card-role > img {
+    width: calc(100% + 40px);
+    height: 100px;
+    margin: -20px -20px 10px;
+}
+
 .card-role:hover {
     transform: scale(1.02);
     background: rgba(255, 255, 255, 0.28);
     box-shadow: 0 5px 20px rgba(255, 255, 255, 0.2);
+}
+
+.voto-selecionado {
+    transform: scale(1.04);
+    border: 2px solid white;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+}
+
+.voto-selecionado.nessa {
+    background: linear-gradient(135deg, #00c853, #00e676);
+    color: white;
+}
+
+.voto-selecionado.fora {
+    background: linear-gradient(135deg, #ff3333, #b71c1c);
+    color: white;
+}
+
+.organizador-role {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 12px;
+    margin: 0;
+}
+
+.organizador-role img {
+    width: 55px;
+    height: 55px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid white;
+    margin: 0;
+}
+
+.organizador-role div {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    gap: 3px;
+}
+
+.organizador-role span {
+    font-size: 0.75rem;
+    opacity: 0.8;
+}
+
+.organizador-role strong {
+    font-size: 1rem;
+}
+
+.descricao-role {
+    text-align: left;
+    margin: 18px 0;
+    padding: 14px;
+    background: rgba(0, 0, 0, 0.14);
+    border-radius: 12px;
+}
+
+.descricao-role p {
+    margin: 0;
+    line-height: 1.5;
+}
+
+.titulo-descricao {
+    font-weight: 800;
+    margin-bottom: 8px !important;
+}
+
+.linha-organizador-data {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin: 15px 0;
+}
+
+.data-role {
+    margin: 0;
+    font-size: 0.9rem;
+    font-weight: 700;
+    white-space: nowrap;
 }
 
 /* CONTADORES DOS PRÓXIMOS ROLÊS */
@@ -531,6 +620,38 @@ body::before {
     margin: 15px 0;
     font-size: 1.2rem;
     font-weight: 800;
+}
+
+.botoes-role {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 18px;
+}
+
+.botoes-role button {
+    flex: 1;
+    width: auto;
+    max-width: 180px;
+    padding: 12px 10px;
+    font-size: 0.95rem;
+    border-radius: 12px;
+}
+
+.icone-carregando {
+    font-size: 50px;
+    color: white;
+    animation: girar 1s linear infinite;
+}
+
+@keyframes girar {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
 }
 
     </style>
@@ -551,7 +672,12 @@ body::before {
     { nome: "Paloma", foto: "imagens/paloma.jpg" },
     { nome: "Arthur", foto: "imagens/arthur.jpg" },
     { nome: "Tomás", foto: "imagens/tomas.jpg" },
-    { nome: "Matheus", foto: "imagens/matheus.jpg" }
+    { nome: "Matheus", foto: "imagens/matheus.jpg" },
+    { nome: "Nívea", foto: "imagens/nivea.jpg" },
+    { nome: "Deyber", foto: "imagens/deyber.jpg" },
+    { nome: "Michael", foto: "imagens/michael.jpg" },
+    { nome: "Paulo", foto: "imagens/paulo.jpg" }
+
 ];
 
 // GERAR CARDS VOTAÇÃO AMIGOS
@@ -763,73 +889,95 @@ async function enviarReclamacao(event) {
     }
 }
 
-function telaProximosRoles() {
+function telaProximosRoles(roles) {
     const tela = document.getElementById("tela");
 
-    const roles = [
-        {
-            id: "ROLE-001",
-            categoria: "Churrasco",
-            organizador: "Pedro",
-            data: "02/12/2026",
-            imagem: "churrasco.jpg",
-            descricao: "Aniversário!",
-            dentro: 2,
-            fora: 1
-        },
-        {
-            id: "ROLE-002",
-            categoria: "Jogatina Caseira",
-            organizador: "Lorran",
-            data: "04/12/2026",
-            imagem: "jogatinacaseira.jpg",
-            descricao: "Noite de jogos com a galera!",
-            dentro: 3,
-            fora: 4
-        },
-        {
-            id: "ROLE-003",
-            categoria: "Karaokê",
-            organizador: "Luiza",
-            data: "18/12/2026",
-            imagem: "karaoke.jpg",
-            descricao: "Vamos soltar a voz!",
-            dentro: 2,
-            fora: 1
-        }
-    ];
+    const imagensCategorias = {
+        "Rolê Caseiro": "rolecaseiro.jpg",
+        "Jogatina Caseira": "jogatinacaseira.jpg",
+        "Bar & Restaurante": "barerestaurante.jpg",
+        "Esporte & Diversão": "esporteediversao.jpg",
+        "Viagem": "viagem.jpg",
+        "Churrasco": "churrasco.jpg",
+        "Cinema": "cinema.jpg",
+        "Karaokê": "karaoke.jpg",
+        "Rock & Roll": "rockeroll.jpg"
+    };
 
     let cards = "";
 
     roles.forEach(role => {
 
+        const imagem = imagensCategorias[role.categoria];
+
+        const respostaUsuario = role.respostaUsuario;
+
+        const dataFormatada = role.data.split("-").reverse().join("/");
+
+        const participante = participantes.find(p =>
+            p.nome.normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .replace(/[^a-zA-Z0-9]/g, "")
+                .toLowerCase() ===
+            role.organizador.normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .replace(/[^a-zA-Z0-9]/g, "")
+                .toLowerCase()
+        );
+
+        const fotoOrganizador = participante
+            ? participante.foto
+            : "imagens/aleatorio.jpg";
+
         cards += `
             <div class="card-role">
-                <img src="imagens/categorias/${role.imagem}" alt="${role.categoria}">
+
+                <img src="imagens/categorias/${imagem}" alt="${role.categoria}">
+
                 <h2>${role.categoria}</h2>
-                <p>Organizado por: ${role.organizador}</p>
-                <p>📅 ${role.data}</p>
-                <p>${role.descricao}</p>
+
+                <div class="linha-organizador-data">
+
+                    <div class="organizador-role">
+                        <img src="${fotoOrganizador}" alt="${role.organizador}">
+                        <div>
+                            <span>Organizado por</span>
+                            <strong>${role.organizador}</strong>
+                        </div>
+                    </div>
+
+                    <p class="data-role">📅 ${dataFormatada}</p>
+
+                </div>
+
+                <div class="descricao-role">
+                    <p class="titulo-descricao">Sobre o rolê</p>
+                    <p>${role.descricao}</p>
+                </div>
 
                 <div class="contadores-role">
-                  <span>🙋 ${role.dentro}</span>
-                  <span>🙅 ${role.fora}</span>
+                    <span>🙋 ${role.dentro}</span>
+                    <span>🙅 ${role.fora}</span>
                 </div>
 
                 <div class="botoes-role">
 
-                  <button onclick="responderRole('${role.id}', 'Tô nessa')">
-                    Tô nessa!
-                  </button>
+                    <button
+                        class="${respostaUsuario === 'Tô nessa' ? 'voto-selecionado nessa' : ''}"
+                        onclick="responderRole('${role.id}', 'Tô nessa')">
+                        Tô nessa!
+                    </button>
 
-                  <button onclick="responderRole('${role.id}', 'Tô fora')">
-                    Tô fora!
-                  </button>
+                    <button
+                        class="${respostaUsuario === 'Tô fora' ? 'voto-selecionado fora' : ''}"
+                        onclick="responderRole('${role.id}', 'Tô fora')">
+                        Tô fora!
+                    </button>
 
                 </div>
+
             </div>
         `;
-
     });
 
     tela.innerHTML = `
@@ -847,7 +995,89 @@ function telaProximosRoles() {
     `;
 }
 
+
+async function responderRole(idRole, resposta) {
+
+    const nome = localStorage.getItem("nomeUsuario");
+
+    if (!nome || nome === "Arregão(ona)") {
+    alert("Anônimos não podem participar dos rolês! Identifique-se primeiro.");
+    return;
+    }
+
+    const dados = {
+    tipo: "votoRole",
+    nome: nome,
+    idRole: idRole,
+    resposta: resposta
+};
+
+try {
+    await fetch(URL_SCRIPT, {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+            "Content-Type": "text/plain;charset=utf-8"
+        },
+        body: JSON.stringify(dados)
+    });
+
+    buscarRoles();
+
+} catch (erro) {
+    alert("Erro ao enviar sua resposta. Tente novamente.");
+    console.error(erro);
+}
+
+}
+
+function buscarRoles() {
+
+    const tela = document.getElementById("tela");
+
+tela.innerHTML = `
+    <h1>Próximos Rolês 🎉</h1>
+    <p>Aqui vamos encontrar os próximos rolês da galera!</p>
+
+    <div class="carregando-roles">
+        <div class="icone-carregando">⟳</div>
+        <h2>Carregando rolês...</h2>
+        <p>Estamos buscando os próximos encontros da galera!</p>
+    </div>
+`;
+
+    const nome = localStorage.getItem("nomeUsuario") || "";
+    const url = `${URL_SCRIPT}?nome=${encodeURIComponent(nome)}`;
+
+    fetch(url)
+    .then(resposta => resposta.json())
+    .then(dados => {
+    if (dados.sucesso) {
+        telaProximosRoles(dados.roles);
+    }
+})
+    .catch(erro => {
+    console.error("Erro ao buscar os rolês:", erro);
+
+    tela.innerHTML = `
+        <h1>Ops! 😕</h1>
+        <p>Não conseguimos carregar os rolês.</p>
+        <p>Verifique sua conexão e tente novamente.</p>
+
+        <button onclick="buscarRoles()">
+            Tentar novamente
+        </button>
+
+        <button class="btn-voltar" onclick="telaInicial()">
+            Voltar ao menu
+        </button>
+    `;
+});
+
+}
+
 function telaSolicitarRole() {
+
     const tela = document.getElementById("tela");
 
     tela.innerHTML = `
@@ -1106,7 +1336,7 @@ async function votarAmigo() {
                         Amigo do mês 🤍
                     </button>
 
-                    <button onclick="telaProximosRoles()">
+                    <button onclick="buscarRoles()">
                         Próximos Rolês 🎉
                     </button>
 
