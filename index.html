@@ -24,7 +24,7 @@
 
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start;
             text-align: center;
         }
 
@@ -36,10 +36,10 @@
         }
 
         #tela {
-            width: 100%;
-            max-width: 850px;
-            padding: 30px;
-        }
+    width: 100%;
+    max-width: 850px;
+    padding: 100px 30px 30px;
+}
 
         h1 {
             font-size: clamp(1.2rem, 3vw, 2rem);
@@ -412,7 +412,9 @@ body::before {
     justify-content: center;
     gap: 15px;
     width: 100%;
-    margin: 20px auto 35px;
+    margin: 0 auto 15px;
+    position: relative;
+    top: -40px;
 }
 
 /* LOGO */
@@ -674,6 +676,49 @@ body::before {
     z-index: 1000;
     cursor: pointer;
     transition: transform 0.3s ease;
+}
+
+.foto-usuario {
+    width: 90px;
+    height: 90px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid white;
+}
+
+.boas-vindas {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    width: 100%;
+    margin: 0 auto 25px;
+    transform: none;
+}
+
+.card-menu {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 2px solid rgba(255, 255, 255, 0.35);
+    border-radius: 20px;
+    padding: 25px;
+    max-width: 500px;
+    margin: 10px auto 30px;
+}
+
+.card-menu .botoes {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.card-menu .botoes button {
+    width: 100%;
+    max-width: 300px;
+    padding: 12px 15px;
+    font-size: 1rem;
 }
 
     </style>
@@ -1349,6 +1394,12 @@ async function votarAmigo() {
         function telaInicial() {
             const tela = document.getElementById("tela");
             const nomeSalvo = localStorage.getItem("nomeUsuario");
+            const participante = participantes.find(p => p.nome === nomeSalvo);
+
+            const fotoUsuario = participante
+                ? participante.foto
+                : "imagens/aleatorio.jpg";
+
             tela.innerHTML = `
                 <div class="cabecalho-glpc">
 
@@ -1358,17 +1409,22 @@ async function votarAmigo() {
         class="logo-glpc"
     >
 
+</div>
+
+<div class="boas-vindas">
+
     <img
-        src="imagens/imagemgrupo.jpg"
-        alt="Foto do grupo GLPC"
-        class="foto-grupo"
+        src="${fotoUsuario}"
+        alt="Foto do usuário"
+        class="foto-usuario"
     >
 
-</div> 
+    <div class="texto-boas-vindas">
+        <h2>Bem-vindo(a), ${nomeSalvo}!</h2>
+    </div>
 
-                <h2> Bem vindo(a) ${nomeSalvo}. 
-                
-                    </h2>
+</div>    
+            <div class="card-menu">
 
                 <div class="botoes">
                     <button onclick="tocarSom('Preciso de ajuda! 🧡'); telaSolicitarRole()">
@@ -1384,6 +1440,8 @@ async function votarAmigo() {
                     </button>
 
                 </div>
+
+            </div>    
 
                 <img
                     src="imagens/btnreclamacao.png"
