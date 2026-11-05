@@ -666,6 +666,16 @@ body::before {
     }
 }
 
+.btn-reclamacao-flutuante {
+    position: fixed;
+    width: 180px;
+    right: 25px;
+    bottom: 25px;
+    z-index: 1000;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
     </style>
 </head>
 
@@ -1373,11 +1383,16 @@ async function votarAmigo() {
                         Próximos Rolês 🎉
                     </button>
 
-                    <button class="botao-reclamacao"
-                            onclick="tocarSom('Fazer reclamação 😡'); telaReclamacao()">
-                        Fazer reclamação 😡
-                    </button>
                 </div>
+
+                <img
+                    src="imagens/btnreclamacao.png"
+                    onmouseover="this.src='imagens/btnreclamacao-hover.png'"
+                    onmouseout="this.src='imagens/btnreclamacao.png'"
+                    alt="Fazer reclamação"
+                    class="btn-reclamacao-flutuante"
+                    onclick="tocarSom('Fazer reclamação 😡'); telaReclamacao()"
+                >
 
                 <button class="btn-trocar-usuario" onclick="trocarUsuario()">
     Trocar usuário
