@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Balcão de Atendimento</title>
+    <link rel="icon" type="image/png" href="imagens/logoGLPC.png">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -692,7 +693,7 @@ body::before {
     justify-content: center;
     gap: 15px;
     width: 100%;
-    margin: 0 auto 25px;
+    margin: 10px auto 25px;
     transform: none;
 }
 
@@ -704,7 +705,7 @@ body::before {
     border-radius: 20px;
     padding: 25px;
     max-width: 500px;
-    margin: 10px auto 30px;
+    margin: 20px auto 30px;
 }
 
 .card-menu .botoes {
@@ -721,6 +722,185 @@ body::before {
     font-size: 1rem;
 }
 
+
+
+
+.card-amigo-mes {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+
+    border: 3px solid transparent;
+    border-radius: 20px;
+    padding: 25px;
+    max-width: 650px;
+    margin: 30px auto;
+    position: relative;
+    isolation: isolate;
+
+    box-shadow:
+        0 0 8px rgba(255, 0, 255, 0.55),
+        0 0 18px rgba(0, 220, 255, 0.35);
+}
+
+/* BORDA RGB */
+.card-amigo-mes::before {
+    content: "";
+    position: absolute;
+    inset: -3px;
+    padding: 3px;
+    border-radius: inherit;
+    pointer-events: none;
+
+    background: linear-gradient(
+        90deg,
+        red,
+        magenta,
+        blue,
+        cyan,
+        lime,
+        yellow,
+        red
+    );
+
+    -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+
+    mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+
+    z-index: -1;
+    animation: rgb-borda 5s linear infinite;
+}
+
+@keyframes rgb-borda {
+    from {
+        filter: hue-rotate(0deg);
+    }
+
+    to {
+        filter: hue-rotate(360deg);
+    }
+}
+
+
+
+@media (max-width: 800px) {
+    #podio-amigo-mes {
+    gap: 8px;
+}
+.podio-primeiro img {
+    width: 100px !important;
+    height: 100px !important;
+}
+
+.podio-segundo img,
+.podio-terceiro img {
+    width: 70px !important;
+    height: 70px !important;
+}
+    .btn-reclamacao-flutuante {
+        width: 100px;
+        right: 0px;
+        bottom: 10px;
+    }
+}
+
+.btn-reclamacao-flutuante {
+    z-index: 99999;
+}
+
+#podio-amigo-mes {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 15px;
+    text-align: center;
+}
+
+.podio-primeiro img {
+    width: 130px;
+    height: 130px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 4px solid gold;
+}
+
+.podio-segundo img,
+.podio-terceiro img {
+    width: 90px;
+    height: 90px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid silver;
+}
+
+.podio-primeiro {
+    order: 2;
+}
+
+.podio-segundo {
+    order: 1;
+}
+
+.podio-terceiro {
+    order: 3;
+}
+
+.cabecalho-amigo-mes {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 10px;
+    padding-top: 0px;
+}
+
+.cabecalho-amigo-mes select {
+    position: absolute;
+    top: -10px;
+    right: 0;
+}
+
+.cabecalho-amigo-mes h2 {
+    margin-top: -15px;
+}
+
+#seletor-mes-amigo {
+    background: rgba(255, 255, 255, 0.15);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 12px;
+    padding: 8px 12px;
+    font-family: inherit;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+#seletor-mes-amigo {
+    position: absolute;
+    bottom: 5px;
+    left: 5px;
+
+    width: 125px;
+    padding: 5px 8px;
+
+    font-size: 12px;
+    border-radius: 10px;
+}
+
+.quantidade-votos {
+    margin-top: 12px;
+    margin-bottom: 20px;
+    position: relative;
+    top: -8px;
+}
+
     </style>
 </head>
 
@@ -730,6 +910,9 @@ body::before {
 
     <script>
         const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbztN028k65cUeiFn6jtwVWi8uXrYU4pXOXEWG5_wvJhzeWFJn6pBxkc1OdyrG37-iTE/exec";
+
+        let votosAmigoMes = [];
+        let mesSelecionadoAmigoMes = "";
 
         const participantes = [
     { nome: "Marcelo", foto: "imagens/marcelo.jpg" },
@@ -794,6 +977,14 @@ const card = `
 
 
 function telaVotacao() {
+
+    const nomeUsuario = localStorage.getItem("nomeUsuario");
+
+if (!nomeUsuario || nomeUsuario.trim().toLowerCase() === "arregão(ona)") {
+    alert("Você precisa se identificar para votar no Amigo do Mês!");
+    telaIdentificacao();
+    return;
+}
 
     document.getElementById("tela").innerHTML = `
 
@@ -864,7 +1055,7 @@ function telaVotacao() {
                     `).join("")}
                 </div>
             `;
-        }
+        } 
 
         // TELA DE RECLAMAÇÕES E SUGESTÕES
         function telaReclamacao() {
@@ -1117,7 +1308,7 @@ try {
 }
 
 
-function buscarRoles(mostrarCarregamento = true) {
+function buscarRoles(mostrarCarregamento = true, atualizarTelaRoles = true) {
 
     const tela = document.getElementById("tela");
 
@@ -1141,26 +1332,243 @@ function buscarRoles(mostrarCarregamento = true) {
         .then(resposta => resposta.json())
         .then(dados => {
             if (dados.sucesso) {
-                telaProximosRoles(dados.roles);
+                if (atualizarTelaRoles) {
+    telaProximosRoles(dados.roles);
+    return;
+}
+                votosAmigoMes = dados.amigos || [];
+
+                console.log("Votos recebidos:", votosAmigoMes);
+console.log("Meses encontrados:", buscarMesesDisponiveis(votosAmigoMes));
+
+                const hoje = new Date();
+
+                const mesAtual = String(hoje.getMonth() + 1).padStart(2, "0");
+                const anoAtual = hoje.getFullYear();
+
+                mesSelecionadoAmigoMes = `${mesAtual}/${anoAtual}`;
+
+                preencherSeletorMes();
+
+                const ranking = calcularRankingAmigos(votosAmigoMes, mesSelecionadoAmigoMes);
+                montarPodioAmigoMes(ranking);
             }
         })
         .catch(erro => {
-            console.error("Erro ao buscar os rolês:", erro);
+    console.error("Erro ao buscar os rolês:", erro);
 
-            tela.innerHTML = `
-                <h1>Ops! 😕</h1>
-                <p>Não conseguimos carregar os rolês.</p>
-                <p>Verifique sua conexão e tente novamente.</p>
+    if (atualizarTelaRoles) {
+        tela.innerHTML = `
+            <h1>Ops! 😕</h1>
+            <p>Não conseguimos carregar os rolês.</p>
+            <p>Verifique sua conexão e tente novamente.</p>
 
-                <button onclick="buscarRoles()">
-                    Tentar novamente
-                </button>
+            <button onclick="buscarRoles()">
+                Tentar novamente
+            </button>
 
-                <button class="btn-voltar" onclick="telaInicial()">
-                    Voltar ao menu
-                </button>
-            `;
-        });
+            <button class="btn-voltar" onclick="telaInicial()">
+                Voltar ao menu
+            </button>
+        `;
+    }
+});
+
+}
+
+function calcularRankingAmigos(votos, mesSelecionado) {
+    const ranking = {};
+
+votos.forEach(voto => {
+    const indicado = voto[2];
+
+    const dataVoto = voto[0];
+
+    const [dia, mes, resto] = dataVoto.split("/");
+    const [ano] = resto.split(" ");
+
+    const mesAnoVoto = `${mes}/${ano}`;
+
+    if (mesAnoVoto !== mesSelecionado) {
+    return;
+}
+
+    if (!ranking[indicado]) {
+    ranking[indicado] = {
+        votos: 0,
+        ultimoVoto: ""
+    };
+}
+
+ranking[indicado].votos++;
+ranking[indicado].ultimoVoto = voto[0];
+
+});
+
+const listaRanking = Object.entries(ranking);
+
+listaRanking.sort((a, b) => {
+    if (b[1].votos !== a[1].votos) {
+        return b[1].votos - a[1].votos;
+    }
+
+    const converterData = data => {
+        const [dia, mes, resto] = data.split("/");
+        const [ano, horario] = resto.split(" ");
+        const [hora, minuto, segundo] = horario.split(":").map(Number);
+
+        return Date.UTC(
+            Number(ano),
+            Number(mes) - 1,
+            Number(dia),
+            hora,
+            minuto,
+            segundo
+        );
+    };
+
+    return converterData(b[1].ultimoVoto) - converterData(a[1].ultimoVoto);
+});
+
+const topTres = listaRanking.slice(0, 3);
+return topTres;
+
+}
+
+function montarPodioAmigoMes(ranking) {
+
+    const container = document.getElementById("podio-amigo-mes");
+
+    if (ranking.length === 0) {
+    container.innerHTML = "<p>Nenhum voto registrado neste mês.</p>";
+    return;
+}
+
+const participantesRanking = ranking.map(([nome, dados]) => {
+    
+    const participante = participantes.find(p => p.nome === nome);
+
+    return {
+        nome: nome,
+        votos: dados.votos,
+        foto: participante ? participante.foto : "imagens/aleatorio.jpg"
+    };
+
+});
+
+const primeiro = participantesRanking[0];
+const segundo = participantesRanking[1] || null;
+const terceiro = participantesRanking[2] || null;
+
+container.innerHTML = `
+    <div class="podio-primeiro">
+        <img src="${primeiro.foto}" alt="${primeiro.nome}">
+        <h3>🥇 ${primeiro.nome}</h3>
+        <p class="quantidade-votos">${primeiro.votos} ${primeiro.votos === 1 ? "voto" : "votos"}</p>
+    </div>
+    ${segundo ? `
+    <div class="podio-segundo">
+        <img src="${segundo.foto}" alt="${segundo.nome}">
+        <h3>🥈 ${segundo.nome}</h3>
+        <p class="quantidade-votos">${segundo.votos} ${segundo.votos === 1 ? "voto" : "votos"}</p>
+    </div>
+` : ""}
+
+${terceiro ? `
+    <div class="podio-terceiro">
+        <img src="${terceiro.foto}" alt="${terceiro.nome}">
+        <h3>🥉 ${terceiro.nome}</h3>
+        <p class="quantidade-votos">${terceiro.votos} ${terceiro.votos === 1 ? "voto" : "votos"}</p>
+    </div>
+` : ""}
+`;
+
+}
+
+function buscarMesesDisponiveis(votos) {
+
+    const meses = [];
+
+    votos.forEach(voto => {
+
+        const dataVoto = voto[0];
+
+const [dia, mes, resto] = dataVoto.split("/");
+const [ano] = resto.split(" ");
+
+const mesAno = `${mes}/${ano}`;
+
+if (!meses.includes(mesAno)) {
+    meses.push(mesAno);
+}
+
+});
+
+meses.sort((a, b) => {
+    const [mesA, anoA] = a.split("/").map(Number);
+    const [mesB, anoB] = b.split("/").map(Number);
+
+    return (anoB * 100 + mesB) - (anoA * 100 + mesA);
+});
+
+return meses;
+
+}
+
+function preencherSeletorMes() {
+
+    const seletor = document.getElementById("seletor-mes-amigo");
+
+    if (!seletor) {
+    return;
+}
+
+    console.log("Função preencherSeletorMes executada!");
+console.log("Elemento encontrado:", seletor);
+
+    const meses = buscarMesesDisponiveis(votosAmigoMes);
+
+    if (meses.length === 0) {
+    seletor.innerHTML = `<option value="">Nenhum mês com votos</option>`;
+    return;
+}
+
+    seletor.innerHTML = meses.map(mes => {
+    const [numeroMes, ano] = mes.split("/");
+
+    const nomeMes = new Date(
+        Number(ano),
+        Number(numeroMes) - 1
+    ).toLocaleDateString("pt-BR", {
+        month: "long"
+    });
+
+    const mesFormatado = `${nomeMes} ${ano}`;
+
+    return `<option value="${mes}">${mesFormatado}</option>`;
+}).join("");
+
+seletor.value = mesSelecionadoAmigoMes;
+
+console.log("HTML do seletor:", seletor.innerHTML);
+console.log("Mês desejado:", mesSelecionadoAmigoMes);
+console.log("Valor selecionado:", seletor.value);
+
+}
+
+function alterarMesAmigo(mes) {
+
+    mesSelecionadoAmigoMes = mes;
+
+    const ranking = calcularRankingAmigos(
+    votosAmigoMes,
+    mesSelecionadoAmigoMes
+);
+
+console.log(ranking);
+
+montarPodioAmigoMes(ranking);
+
 }
 
 
@@ -1337,6 +1745,12 @@ async function votarAmigo() {
 
     const nomeUsuario = localStorage.getItem("nomeUsuario");
 
+    if (!nomeUsuario || nomeUsuario.trim().toLowerCase() === "arregão(ona)") {
+    alert("Anônimos não podem votar no Amigo do Mês! Identifique-se primeiro.");
+    telaIdentificacao();
+    return;
+}
+
     const selecionado = document.querySelector(
         'input[name="votoAmigo"]:checked'
     );
@@ -1435,13 +1849,33 @@ async function votarAmigo() {
                         Amigo do mês 🤍
                     </button>
 
-                    <button onclick="buscarRoles()">
-                        Próximos Rolês 🎉
-                    </button>
+                    <button onclick="
+    const som = new Audio('mp3/cassinao.mp3');
+    som.volume = 0.5;
+    som.play();
+    buscarRoles();
+">
+    Próximos Rolês 🎉
+</button>
 
                 </div>
 
             </div>    
+
+            <div id="card-amigo-mes" class="card-amigo-mes">
+
+<div class="cabecalho-amigo-mes">
+    <h2>🏆 Amigo do Mês</h2>
+</div>
+
+<select
+    id="seletor-mes-amigo"
+    onchange="alterarMesAmigo(this.value)"
+></select>
+
+<div id="podio-amigo-mes"></div>
+
+</div>
 
                 <img
                     src="imagens/btnreclamacao.png"
@@ -1457,6 +1891,9 @@ async function votarAmigo() {
 </button>
 
             `;
+
+            buscarRoles(false, false);
+
         }
 
         function telaIdentificacao () {
