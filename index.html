@@ -693,7 +693,7 @@ body::before {
     justify-content: center;
     gap: 15px;
     width: 100%;
-    margin: 10px auto 25px;
+    margin: 10px auto 65px;
     transform: none;
 }
 
@@ -704,7 +704,7 @@ body::before {
     border: 2px solid rgba(255, 255, 255, 0.35);
     border-radius: 20px;
     padding: 25px;
-    max-width: 500px;
+    max-width: 600px;
     margin: 20px auto 30px;
 }
 
@@ -717,12 +717,21 @@ body::before {
 
 .card-menu .botoes button {
     width: 100%;
-    max-width: 300px;
-    padding: 12px 15px;
-    font-size: 1rem;
+    max-width: 1000px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    box-shadow: none;
+    cursor: pointer;
+    min-width: 100%;
+} 
+
+.card-menu .botoes button img {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
 }
-
-
 
 
 .card-amigo-mes {
@@ -899,6 +908,34 @@ body::before {
     margin-bottom: 20px;
     position: relative;
     top: -8px;
+}
+
+.imagem-identificacao {
+    width: 100%;
+    overflow: hidden;
+}
+
+.faixa-identificacao {
+    display: flex;
+    width: max-content;
+    animation: letreiro-identificacao 3s linear infinite;
+}
+
+.faixa-identificacao img {
+    display: block;
+    width: 100vw;
+    height: auto;
+    flex-shrink: 0;
+}
+
+@keyframes letreiro-identificacao {
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(-50%);
+    }
 }
 
     </style>
@@ -1841,21 +1878,39 @@ async function votarAmigo() {
             <div class="card-menu">
 
                 <div class="botoes">
-                    <button onclick="tocarSom('Preciso de ajuda! 🧡'); telaSolicitarRole()">
-                        Solicitar rolê! 🧡
-                    </button>
+                    <button
+    class="btn-imagem-menu"
+    onclick="tocarSom('Preciso de ajuda! 🧡'); telaSolicitarRole()"
+>
+    <img
+        src="imagens/buttons/btn-solicitarrole-novo.png"
+        alt="Solicitar rolê"
+    >
+</button>
 
-                    <button onclick="tocarSom('Enviar carinho 🤍'); telaVotacao()">
-                        Amigo do mês 🤍
-                    </button>
+                    <button
+    class="btn-imagem-menu"
+    onclick="tocarSom('Enviar carinho 🤍'); telaVotacao()"
+>
+    <img
+        src="imagens/buttons/btn-amigosdomes-novo.png"
+        alt="Amigos do mês"
+    >
+</button>
 
-                    <button onclick="
-    const som = new Audio('mp3/cassinao.mp3');
-    som.volume = 0.5;
-    som.play();
-    buscarRoles();
-">
-    Próximos Rolês 🎉
+                    <button
+    class="btn-imagem-menu"
+    onclick="
+        const som = new Audio('mp3/cassinao.mp3');
+        som.volume = 0.5;
+        som.play();
+        buscarRoles();
+    "
+>
+    <img
+        src="imagens/buttons/btn-proximosroles-novo.png"
+        alt="Próximos rolês"
+    >
 </button>
 
                 </div>
@@ -1930,7 +1985,15 @@ async function votarAmigo() {
                     Entrar anônimo 👀
                 </button>    
                  
-                </div>  
+                </div>
+                
+                <div class="imagem-identificacao">
+    <div class="faixa-identificacao">
+        <img src="imagens/imgidentificacao.png" alt="">
+        <img src="imagens/imgidentificacao.png" alt="">
+    </div>
+</div>
+                
             `      
 
         }
