@@ -1,0 +1,203 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>O Mais Provável | GLPC</title>
+
+    <!-- Fonte do projeto -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- CSS exclusivo do jogo -->
+    <link rel="stylesheet" href="css/jogos.css">
+</head>
+
+<body>
+
+    <main id="jogo">
+
+        <!-- CABEÇALHO -->
+        <header class="cabecalho-jogo">
+
+            <div class="identidade-jogo">
+
+                <span class="selo-glpc">GLPC ORIGINAL</span>
+
+                <h1>O MAIS <span>PROVÁVEL</span></h1>
+
+                <p>Quem do grupo tem mais chances de...</p>
+
+            </div>
+
+            <button class="btn-voltar" onclick="voltarCentral()">
+                ← Voltar à Central
+            </button>
+
+        </header>
+
+
+        <!-- ÁREA PRINCIPAL DO JOGO -->
+        <section class="area-pergunta">
+
+            <!-- CARD DA PERGUNTA -->
+            <div class="card-pergunta">
+
+                <div class="topo-pergunta">
+
+                    <span class="status-rodada">
+                        <span class="ponto-ativo"></span>
+                        RODADA ATIVA
+                    </span>
+
+                    <span class="numero-rodada" id="numeroRodada">
+                        #001
+                    </span>
+
+                </div>
+
+                <div class="conteudo-pergunta">
+
+                    <span class="rotulo-pergunta">
+                        A PERGUNTA DA VEZ
+                    </span>
+
+                    <h2 id="textoPergunta">
+                        Quem de nós é mais provável de ser um serial killer?
+                    </h2>
+
+                    <p class="autor-pergunta" id="autorPergunta">
+                        Sugerida por <strong>Lorran</strong>
+                    </p>
+
+                </div>
+
+                <div class="tempo-pergunta">
+
+                    <span>TEMPO RESTANTE</span>
+
+                    <strong id="tempoRestante">Calculando...</strong>
+
+                </div>
+
+            </div>
+
+
+            <!-- ÁREA DE VOTAÇÃO -->
+            <div class="area-votacao">
+
+                <div class="cabecalho-votacao">
+
+                    <div>
+
+                        <span class="rotulo-pergunta">HORA DE ESCOLHER</span>
+
+                        <h2>Quem é o mais provável?</h2>
+
+                        <p>Escolha alguém do grupo para receber seu voto.</p>
+
+                    </div>
+
+                    <span class="contador-votos">0/1</span>
+
+                </div>
+
+                <div class="grade-participantes" id="gradeParticipantes">
+
+                    <button class="card-participante" data-id="1">
+                        <span class="avatar-participante">L</span>
+                        <span class="nome-participante">Lorran</span>
+                    </button>
+
+                    <button class="card-participante" data-id="2">
+                        <span class="avatar-participante">L</span>
+                        <span class="nome-participante">Luiza</span>
+                    </button>
+
+                    <button class="card-participante" data-id="3">
+                        <span class="avatar-participante">M</span>
+                        <span class="nome-participante">Marcelo</span>
+                    </button>
+
+                    <button class="card-participante" data-id="4">
+                        <span class="avatar-participante">B</span>
+                        <span class="nome-participante">Bruna</span>
+                    </button>
+
+                </div>
+
+                
+<button class="btn-confirmar-voto" id="btnConfirmarVoto" disabled>
+
+    <svg
+        class="icone-carregando"
+        id="iconeCarregando"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        hidden
+    >
+        <path d="M6 2h12M6 22h12M7 2v4l5 6-5 6v4M17 2v4l-5 6 5 6v4"/>
+    </svg>
+
+    <span id="textoBotaoVoto">Confirmar voto</span>
+
+</button>
+
+
+             
+<!-- CARD DE RESULTADO -->
+<div class="card-resultado" id="resultadoVotacao" hidden>
+
+    <div class="topo-resultado">
+        <span class="rotulo-pergunta">GANHANDO ATÉ O MOMENTO</span>
+        <span class="selo-ao-vivo">AO VIVO</span>
+    </div>
+
+    <div class="destaque-resultado">
+
+        <img
+            id="fotoLider"
+            src=""
+            alt="Foto do participante"
+        >
+
+        <h3 id="nomeLider">Aguardando votos...</h3>
+
+        <strong id="porcentagemLider">0%</strong>
+
+        <span>DOS VOTOS RECEBIDOS</span>
+
+    </div>
+
+    <button
+        class="btn-repensar-voto"
+        id="btnRepensarVoto"
+        type="button"
+    >
+        Repensar voto
+    </button>
+
+</div>
+
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- JavaScript exclusivo do jogo -->
+    <script src="js/participantes.js"></script>
+    <script src="js/jogos.js"></script>
+
+</body>
+
+</html>
