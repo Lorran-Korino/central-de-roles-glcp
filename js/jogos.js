@@ -213,6 +213,39 @@ function carregarRodada() {
             // Inicia a contagem regressiva da rodada.
 atualizarTempoRestante(jogo.encerramento);
 
+// Verifica se o usuário já votou nesta rodada.
+if (jogo.meuVoto) {
+
+    console.log("Usuário já votou em:", jogo.meuVoto.nomeVotado);
+
+    // Recupera o voto anterior.
+    nomeParticipanteSelecionado = jogo.meuVoto.nomeVotado;
+
+    const indiceVotado = participantes.findIndex(
+        p => p.nome === jogo.meuVoto.nomeVotado
+    );
+
+    participanteSelecionado = indiceVotado >= 0
+        ? String(indiceVotado)
+        : null;
+
+    // Atualiza o card com o resultado atual.
+    atualizarCardResultado(jogo.resultado);
+
+    // Mostra diretamente a tela de resultado.
+    mostrarResultado();
+
+} else {
+
+    console.log("Usuário ainda não votou nesta rodada.");
+
+    // Mantém a tela de votação disponível.
+    areaVotacao.hidden = false;
+    resultadoVotacao.hidden = true;
+    gradeParticipantes.hidden = false;
+    btnConfirmarVoto.hidden = false;
+}
+
     };
 
     // Cria a URL com os parâmetros da consulta.
@@ -479,3 +512,10 @@ function esconderCarregamentoVoto() {
 
 }
 
+// =====================================
+// VOLTAR PARA A CENTRAL GLPC
+// =====================================
+
+function voltarCentral() {
+    window.location.href = "index.html";
+}

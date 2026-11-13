@@ -950,6 +950,18 @@ async function votarAmigo() {
     >
 </button>
 
+
+<button
+    class="btn-imagem-menu"
+    onclick="window.location.href='jogos.html'"
+>
+    <img
+        src="imagens/buttons/btn-omaisprovavel.png"
+        alt="O Mais Provável"
+    >
+</button>
+
+
                 </div>
 
             </div>    
