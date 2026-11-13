@@ -67,11 +67,11 @@
                     </span>
 
                     <h2 id="textoPergunta">
-                        Quem de nós é mais provável de ser um serial killer?
+                        Carregando jogo... 
                     </h2>
 
                     <p class="autor-pergunta" id="autorPergunta">
-                        Sugerida por <strong>Lorran</strong>
+                        Carregando <strong>Carregando</strong>
                     </p>
 
                 </div>
@@ -88,7 +88,13 @@
 
 
             <!-- ÁREA DE VOTAÇÃO -->
-            <div class="area-votacao">
+
+<div id="carregamentoInicial" class="carregamento-inicial">
+    <div class="spinner-votos"></div>
+    <p>Carregando votos...</p>
+</div>
+
+            <div class="area-votacao" id="areaVotacao" hidden>
 
                 <div class="cabecalho-votacao">
 
@@ -191,6 +197,55 @@
             </div>
 
         </section>
+
+        <!-- HISTÓRICO DE RODADAS -->
+<section class="secao-historico" id="secaoHistorico" hidden>
+
+    <div class="cabecalho-historico">
+        <h2>Perguntas finalizadas</h2>
+        <p>Confira quem levou a fama em cada rodada!</p>
+    </div>
+
+    <div id="listaHistoricoMaisProvavel"></div>
+
+</section>
+
+        <!-- SUGESTÃO DE PERGUNTAS -->
+<section class="area-sugestao">
+
+    <h2>Tem uma pergunta boa?</h2>
+
+    <p>Envie sua sugestão para as próximas rodadas!</p>
+
+    <button class="btn-enviar-sugestao" id="btnAbrirSugestao">
+        💡 Enviar sugestão
+    </button>
+
+    <div class="formulario-sugestao" id="formularioSugestao" hidden>
+
+    <h3>Sua pergunta para o grupo</h3>
+
+    <textarea
+        id="textoSugestao"
+        placeholder="Quem do grupo seria mais provável de..."
+        maxlength="200"
+        rows="3"
+    ></textarea>
+
+    <label class="opcao-anonima">
+        <input type="checkbox" id="sugestaoAnonima">
+        Enviar como anônimo
+    </label>
+
+    <button id="btnConfirmarSugestao" class="btn-confirmar-sugestao">
+        Enviar pergunta
+    </button>
+
+    <p id="mensagemSugestao"></p>
+
+</div>
+
+</section>
 
     </main>
 

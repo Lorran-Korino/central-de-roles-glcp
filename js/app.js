@@ -237,8 +237,29 @@ function telaProximosRoles(roles) {
     };
 
     let cards = "";
+let cardsConcluidos = "";
 
-    roles.forEach(role => {
+const hoje = new Date();
+hoje.setHours(0, 0, 0, 0);
+
+const rolesAtivos = [];
+const rolesFinalizados = [];
+
+roles.forEach(role => {
+    const [ano, mes, dia] = role.data.split("-").map(Number);
+    const dataRole = new Date(ano, mes - 1, dia);
+
+    if (dataRole < hoje) {
+        rolesFinalizados.push(role);
+    } else {
+        rolesAtivos.push(role);
+    }
+});
+
+// Ordena os concluídos do mais recente para o mais antigo
+rolesFinalizados.sort((a, b) => b.data.localeCompare(a.data));
+
+    rolesAtivos.forEach(role => {
 
         const imagem = imagensCategorias[role.categoria];
 
@@ -266,7 +287,13 @@ function telaProximosRoles(roles) {
 
                 <img src="imagens/categorias/${imagem}" alt="${role.categoria}">
 
-                <h2>${role.categoria}</h2>
+<div class="cabecalho-status-role">
+
+    <h2>${role.categoria}</h2>
+
+    <span class="tag-nao-rolou">Não rolou ainda</span>
+
+</div>
 
                 <div class="linha-organizador-data">
 
@@ -287,10 +314,25 @@ function telaProximosRoles(roles) {
                     <p>${role.descricao}</p>
                 </div>
 
-                <div class="contadores-role">
-                    <span>🙋 ${role.dentro}</span>
-                    <span>🙅 ${role.fora}</span>
-                </div>
+                <div class="participantes-roles">
+
+    <div class="linha-participantes">
+        <span class="contador-dentro">
+            🙋 ${role.dentro}
+        </span>
+
+        ${gerarFotosParticipantes(role.nomesDentro)}
+    </div>
+
+    <div class="linha-participantes">
+        <span class="contador-fora">
+            🙅 ${role.fora}
+        </span>
+
+        ${gerarFotosParticipantes(role.nomesFora)}
+    </div>
+
+</div>
 
                 <div class="botoes-role">
 
@@ -312,18 +354,94 @@ function telaProximosRoles(roles) {
         `;
     });
 
+    rolesFinalizados.forEach(role => {
+
+    const dataFormatada = role.data.split("-").reverse().join("/");
+
+    cardsConcluidos += `
+        <div class="card-role-concluido">
+            <div>
+                <h3>${role.categoria}</h3>
+                <p>📅 ${dataFormatada}</p>
+            </div>
+
+            <span class="tag-concluido">Rolê concluído</span>
+        </div>
+    `;
+});
+
     tela.innerHTML = `
         <h1>Próximos Rolês 🎉</h1>
 
         <p>Aqui vamos encontrar os próximos rolês da galera!</p>
 
         <div id="listaRoles">
-            ${cards}
-        </div>
+    ${cards || '<p>Nenhum rolê futuro encontrado.</p>'}
+</div>
 
-        <button class="btn-voltar" onclick="telaInicial()">
-            Voltar
-        </button>
+${cardsConcluidos ? `
+    <section class="secao-roles-concluidos">
+        <h2>Rolês concluídos</h2>
+
+        <div id="listaRolesConcluidos">
+            ${cardsConcluidos}
+        </div>
+    </section>
+` : ''}
+
+<button class="btn-voltar" onclick="telaInicial()">
+    Voltar
+</button>
+    `;
+}
+
+
+function gerarFotosParticipantes(nomes) {
+
+    const lista = nomes || [];
+
+    const fotos = lista.slice(0, 5).map(nome => {
+
+        const participante = participantes.find(p =>
+            p.nome.normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .replace(/[^a-zA-Z0-9]/g, "")
+                .toLowerCase() ===
+            nome.normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .replace(/[^a-zA-Z0-9]/g, "")
+                .toLowerCase()
+        );
+
+        const foto = participante
+            ? participante.foto
+            : "imagens/aleatorio.jpg";
+
+        return `
+            <img
+                src="${foto}"
+                alt="${nome}"
+                title="${nome}"
+                class="foto-participante-role"
+            >
+        `;
+    }).join("");
+
+    const restante = lista.length - 5;
+
+    return `
+        <div class="grupo-fotos-role">
+            ${fotos}
+
+            ${restante > 0 ? `
+                <button class="mais-participantes-role"
+                    type="button"
+                    disabled
+                    title="${restante} participantes adicionais">
+                    +${restante}
+                </button>
+            ` : ""}
+        </div>
     `;
 }
 

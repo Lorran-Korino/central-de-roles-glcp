@@ -62,7 +62,7 @@
 
 /* BOTÃO VOLTAR CINZA */
 .btn-voltar {
-    background: linear-gradient(135deg, #05dd71, #dbdf0a) !important;
+    background: linear-gradient(135deg, #ffffff, #bff9fd) !important;
     border: 2px solid rgba(255, 255, 255, 0.6) !important;
     color: rgb(10, 10, 10);
 }
@@ -711,7 +711,7 @@ body::before {
     box-shadow: none;
     cursor: pointer;
     min-width: 100%;
-} 
+}
 
 .card-menu .botoes button img {
     display: block;
@@ -782,7 +782,6 @@ body::before {
         filter: hue-rotate(360deg);
     }
 }
-
 
 
 @media (max-width: 800px) {
@@ -922,5 +921,506 @@ body::before {
 
     to {
         transform: translateX(-50%);
+    }
+}
+
+
+/* SEÇÃO DE ROLÊS CONCLUÍDOS */
+.secao-roles-concluidos {
+    max-width: 600px;
+    margin: 45px auto 30px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.10);
+    border: 2px solid rgba(255, 255, 255, 0.35);
+    border-radius: 18px;
+}
+
+.secao-roles-concluidos h2 {
+    margin: 0 0 20px;
+    font-size: 1.4rem;
+}
+
+/* LISTA DE ROLÊS CONCLUÍDOS */
+#listaRolesConcluidos {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* CARD INDIVIDUAL */
+.card-role-concluido {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.13);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 12px;
+
+    text-align: left;
+    transition: 0.25s;
+}
+
+.card-role-concluido:hover {
+    background: rgba(255, 255, 255, 0.22);
+    transform: scale(1.02);
+}
+
+.card-role-concluido h3 {
+    margin: 0 0 8px;
+    font-size: 1.05rem;
+}
+
+.card-role-concluido p {
+    margin: 0;
+    font-size: 0.9rem;
+    opacity: 0.85;
+}
+
+/* ETIQUETA DE CONCLUÍDO */
+.tag-concluido {
+    display: inline-block;
+    padding: 8px 12px;
+
+    background: rgba(0, 200, 83, 0.18);
+    border: 1px solid rgba(0, 230, 118, 0.6);
+    border-radius: 20px;
+
+    color: #69f0ae;
+    font-size: 0.8rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+/* RESPONSIVIDADE */
+@media (max-width: 480px) {
+    .card-role-concluido {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+
+/* TAG - NÃO ROLOU AINDA */
+.tag-nao-rolou {
+    display: inline-block;
+    padding: 7px 16px;
+    margin: 8px auto 12px;
+
+    background: rgba(255, 193, 7, 0.15);
+    border: 1px solid rgba(255, 193, 7, 0.65);
+    border-radius: 20px;
+
+    color: #ffd54f;
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: 0.3px;
+}
+
+/* CABEÇALHO DO CARD DE ROLÊ */
+.cabecalho-status-role {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.cabecalho-status-role h2 {
+    order: 1;
+    margin: 0;
+    font-size: 1.3rem;
+    text-align: left;
+}
+
+.cabecalho-status-role .tag-nao-rolou {
+    order: 2;
+    margin: 0;
+    flex-shrink: 0;
+}
+
+
+/* PARTICIPANTES DOS ROLÊS */
+.participantes-roles {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin: 20px 0;
+}
+
+.linha-participantes {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    min-height: 42px;
+}
+
+/* CONTADORES */
+.contador-dentro,
+.contador-fora {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    height: 42px;
+    min-width: 55px;
+    gap: 4px;
+    margin: 0;
+    padding: 0;
+    font-size: 1.1rem;
+    font-weight: 800;
+    line-height: 1;
+    text-align: left;
+    transform: translateY(-5px);
+}
+
+.contador-dentro {
+    color: #69f0ae;
+}
+
+.contador-fora {
+    color: #ff7777;
+}
+
+/* FOTOS DOS PARTICIPANTES */
+.card-role .grupo-fotos-role {
+    display: flex;
+    align-items: center;
+    height: 42px;
+    gap: 0;
+    padding-left: 5px;
+}
+
+.card-role .grupo-fotos-role img.foto-participante-role {
+    display: block;
+    width: 42px;
+    min-width: 42px;
+    height: 42px;
+    min-height: 42px;
+    aspect-ratio: 1 / 1;
+    flex-shrink: 0;
+    margin: 0 0 0 -5px;
+    border: 2px solid white;
+    border-radius: 50%;
+    object-fit: cover;
+    position: relative;
+}
+
+/* INDICADOR DE PARTICIPANTES EXTRAS */
+.card-role .mais-participantes-role {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    min-width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+    margin-left: -5px;
+    padding: 0;
+    border: 2px solid white;
+    border-radius: 50%;
+    background: #39305c;
+    color: white;
+    font-size: 0.8rem;
+}
+
+/* ======================================================
+   IDENTIDADE VISUAL GLPC — ROSA NOTURNO
+   Ajustes exclusivamente de cores, fundos e sombras.
+   A estrutura, dimensões e posicionamento foram mantidos.
+   ====================================================== */
+
+/* Fundo principal: preto com nuance ameixa */
+body {
+    background: linear-gradient(145deg, #08050d 0%, #100817 48%, #17091b 100%);
+    color: #f8edf6;
+}
+
+body::before {
+    border-color: rgba(245, 190, 226, 0.62);
+}
+
+/* Destaques e títulos */
+.texto-gradiente {
+    background: linear-gradient(120deg, #ffd1eb, #f47ac4 55%, #c77bdf);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+/* Botões gerais: rosa sofisticado com profundidade */
+button {
+    background: linear-gradient(145deg, #e968b6 0%, #c43d98 58%, #963b91 100%) padding-box,
+                linear-gradient(145deg, rgba(255, 224, 245, 0.8), rgba(202, 119, 190, 0.55)) border-box;
+    color: #fff8fd;
+}
+
+button:hover {
+    background: linear-gradient(145deg, #f17bc5, #d94da9 58%, #ad4ba5) padding-box,
+                linear-gradient(145deg, rgba(255, 235, 249, 0.95), rgba(224, 155, 211, 0.75)) border-box;
+    color: #ffffff;
+}
+
+/* Botão voltar */
+.btn-voltar {
+    background: linear-gradient(135deg, #f4c6e2, #d88cbd) !important;
+    border-color: rgba(255, 232, 247, 0.8) !important;
+    color: #35152e;
+}
+
+.btn-voltar:hover {
+    background: linear-gradient(135deg, #e7a8d1, #bd6ba7) !important;
+}
+
+/* Formulários: campos escuros integrados ao tema */
+.campo-nome input,
+.formulario-reclamacao select,
+.formulario-reclamacao textarea,
+.formulario-role input[type="date"],
+.formulario-role select,
+.formulario-role textarea {
+    background: #211729;
+    color: #fff1fa;
+    border-color: rgba(235, 155, 207, 0.62);
+}
+
+.campo-nome input::placeholder,
+.formulario-reclamacao textarea::placeholder,
+.formulario-role textarea::placeholder {
+    color: #bda8bb;
+}
+
+.campo-nome input:focus,
+.formulario-reclamacao select:focus,
+.formulario-reclamacao textarea:focus,
+.formulario-role input:focus,
+.formulario-role select:focus,
+.formulario-role textarea:focus {
+    outline: none;
+    border-color: #f17bc5;
+    box-shadow: 0 0 0 3px rgba(241, 123, 197, 0.16);
+}
+
+/* Opções e seleção de participantes */
+.opcoes-interesse label {
+    border-color: rgba(230, 105, 183, 0.72);
+    background: rgba(226, 91, 174, 0.08);
+}
+
+.opcoes-interesse input[type="radio"]:checked + label {
+    background: linear-gradient(135deg, #e968b6, #b94aab);
+    border-color: #ffd2ed;
+    color: #ffffff;
+}
+
+.card-participante {
+    background: rgba(83, 48, 83, 0.38);
+    border-color: rgba(232, 178, 218, 0.42);
+}
+
+.seletor-voto {
+    background: rgba(244, 207, 234, 0.12);
+    border-color: rgba(255, 225, 245, 0.7);
+}
+
+.card-participante:has(input:checked) {
+    background: linear-gradient(145deg, #d94da9, #9e4b9e);
+    border-color: #ffe2f4;
+    box-shadow: 0 0 15px rgba(231, 91, 181, 0.32);
+}
+
+.card-participante:has(input:checked) .seletor-voto {
+    background: #fff0fa;
+    color: #87366f;
+}
+
+/* Identificação e cartões de conteúdo */
+.insert input {
+    background: #211729;
+    color: #fff1fa;
+    border-color: rgba(235, 155, 207, 0.62);
+}
+
+.insert input::placeholder {
+    color: #bda8bb;
+}
+
+.insert input:focus {
+    border-color: #f17bc5;
+    box-shadow: 0 0 12px rgba(241, 123, 197, 0.28);
+    background: #291b30;
+}
+
+.card-role {
+    background: linear-gradient(145deg, rgba(67, 43, 75, 0.92), rgba(39, 27, 49, 0.96));
+    border-color: rgba(235, 190, 224, 0.58);
+}
+
+.card-role:hover {
+    background: linear-gradient(145deg, rgba(83, 49, 88, 0.96), rgba(48, 31, 58, 0.98));
+    box-shadow: 0 5px 20px rgba(215, 91, 177, 0.16);
+}
+
+.descricao-role {
+    background: rgba(13, 8, 19, 0.34);
+}
+
+/* Respostas dos rolês: mantém verde e vermelho como sinais de escolha */
+.voto-selecionado.nessa {
+    background: linear-gradient(135deg, #00b85b, #00d878);
+    color: #ffffff;
+}
+
+.voto-selecionado.fora {
+    background: linear-gradient(135deg, #ed454d, #b9233c);
+    color: #ffffff;
+}
+
+/* Menu e cartão Amigo do Mês */
+.card-menu {
+    background: rgba(48, 29, 57, 0.76);
+    border-color: rgba(232, 178, 218, 0.34);
+}
+
+.card-amigo-mes {
+    background: rgba(48, 27, 58, 0.78);
+    box-shadow: 0 0 8px rgba(238, 91, 183, 0.28),
+                0 0 18px rgba(169, 91, 194, 0.2);
+}
+
+.card-amigo-mes::before {
+    background: linear-gradient(90deg, #f5a4d5, #e34eaa, #a75bd0, #e34eaa, #f5a4d5);
+}
+
+/* Seletor de mês */
+#seletor-mes-amigo {
+    background: #291b32;
+    color: #fff1fa;
+    border-color: rgba(235, 155, 207, 0.58);
+}
+
+/* Histórico de rolês concluídos */
+.secao-roles-concluidos {
+    background: rgba(43, 27, 51, 0.78);
+    border-color: rgba(229, 173, 215, 0.38);
+}
+
+.card-role-concluido {
+    background: rgba(105, 59, 100, 0.22);
+    border-color: rgba(230, 181, 219, 0.32);
+}
+
+.card-role-concluido:hover {
+    background: rgba(135, 68, 119, 0.3);
+}
+
+/* Status: rosa para pendente e verde para concluído */
+.tag-nao-rolou {
+    background: rgba(224, 91, 174, 0.13);
+    border-color: rgba(244, 139, 205, 0.72);
+    color: #ffc2e5;
+}
+
+.tag-concluido {
+    background: rgba(0, 200, 112, 0.13);
+    border-color: rgba(91, 220, 157, 0.52);
+    color: #8ce8b8;
+}
+
+/* Fotos e indicador de participantes */
+.card-role .grupo-fotos-role img.foto-participante-role {
+    border-color: #f9e5f3;
+}
+
+.card-role .mais-participantes-role {
+    background: linear-gradient(145deg, #6d3c70, #422746);
+    border-color: #f3c9e6;
+    color: #fff3fb;
+}
+
+/* Contadores mantêm as cores semânticas: dentro / fora */
+.contador-dentro {
+    color: #8ce8b8;
+}
+
+.contador-fora {
+    color: #ff9aa8;
+}
+
+/* Botão de trocar usuário */
+.btn-trocar-usuario {
+    background: #38263f;
+    color: #fff0fa;
+    border-color: rgba(236, 183, 221, 0.35);
+}
+
+.btn-trocar-usuario:hover {
+    background: #59365b;
+}
+
+/* Borda das fotos e elementos claros */
+.foto-grupo,
+.foto-usuario,
+.organizador-role img {
+    border-color: rgba(255, 225, 245, 0.9);
+}
+
+/* Botão de reclamação mantém seu sinal de alerta, com vermelho menos agressivo */
+.botao-reclamacao {
+    background: linear-gradient(135deg, #df526d, #a92f58);
+    border-color: rgba(255, 224, 235, 0.85);
+}
+
+.botao-reclamacao:hover {
+    background: linear-gradient(135deg, #ed7187, #c33e68);
+}
+
+
+/* FUNDO ANIMADO GLPC */
+
+body {
+    position: relative;
+    isolation: isolate;
+    overflow-x: hidden;
+}
+
+body::after {
+    content: "";
+    position: fixed;
+    inset: -15%;
+    background-image: url("../imagens/imgbg.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: auto;
+    opacity: 0.40;
+    pointer-events: none;
+    z-index: 0;
+
+    animation: movimentoFundo 35s ease-in-out infinite alternate;
+}
+
+/* Mantém o conteúdo acima da imagem */
+body > * {
+    position: relative;
+    z-index: 1;
+}
+
+@keyframes movimentoFundo {
+    0% {
+        transform: translate(-3%, -2%) rotate(-3deg) scale(1);
+    }
+    25% {
+        transform: translate(2%, 3%) rotate(2deg) scale(1.04);
+    }
+    50% {
+        transform: translate(4%, -2%) rotate(-1deg) scale(1.02);
+    }
+    75% {
+        transform: translate(-2%, 4%) rotate(3deg) scale(1.05);
+    }
+    100% {
+        transform: translate(3%, 1%) rotate(-2deg) scale(1);
     }
 }

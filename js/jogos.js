@@ -30,6 +30,7 @@ const textoBotaoVoto = document.getElementById("textoBotaoVoto");
 const areaVotacao = document.querySelector(".area-votacao");
 const resultadoVotacao = document.getElementById("resultadoVotacao");
 const btnRepensarVoto = document.getElementById("btnRepensarVoto");
+const carregamentoInicial = document.getElementById("carregamentoInicial");
 
 // =====================================
 // DADOS DO PARTICIPANTE LÍDER
@@ -127,7 +128,7 @@ nomeParticipanteSelecionado = participante.nome;
 // =====================================
 
 const URL_SCRIPT_JOGO = "https://script.google.com/macros/s/AKfycbztN028k65cUeiFn6jtwVWi8uXrYU4pXOXEWG5_wvJhzeWFJn6pBxkc1OdyrG37-iTE/exec";
-
+const nomeUsuarioAtual = localStorage.getItem("nomeUsuario");
 
 // =====================================
 // CONTAGEM REGRESSIVA DA RODADA
@@ -196,6 +197,16 @@ function carregarRodada() {
 
         const jogo = dados.maisProvavel;
 
+        // Recebe o histórico de rodadas finalizadas.
+const historico = dados.historicoMaisProvavel || [];
+
+console.log("Histórico recebido:", historico);
+
+mostrarHistoricoMaisProvavel(historico);
+
+        // Esconde o carregamento inicial após receber os dados.
+carregamentoInicial.hidden = true;
+
         // Verifica se existe uma pergunta ativa.
         if (!jogo.pergunta) {
             console.log("Nenhuma pergunta disponível.");
@@ -215,6 +226,8 @@ atualizarTempoRestante(jogo.encerramento);
 
 // Verifica se o usuário já votou nesta rodada.
 if (jogo.meuVoto) {
+
+    contadorVotos.textContent = "1/1";
 
     console.log("Usuário já votou em:", jogo.meuVoto.nomeVotado);
 
@@ -239,6 +252,8 @@ if (jogo.meuVoto) {
 
     console.log("Usuário ainda não votou nesta rodada.");
 
+    contadorVotos.textContent = "0/1";
+
     // Mantém a tela de votação disponível.
     areaVotacao.hidden = false;
     resultadoVotacao.hidden = true;
@@ -254,7 +269,7 @@ if (jogo.meuVoto) {
     script.src =
         URL_SCRIPT_JOGO +
         "?jogo=maisProvavel" +
-        "&nome=Lorran" +
+        "&nome=" + encodeURIComponent(nomeUsuarioAtual) +
         "&callback=receberEstadoMaisProvavel";
 
     // Adiciona o script à página para executar a consulta.
@@ -271,6 +286,9 @@ carregarRodada();
 // =====================================
 
 function mostrarResultado() {
+
+    // Mostra a área de votação após a consulta.
+    areaVotacao.hidden = false;
 
     // Esconde a grade de participantes.
     gradeParticipantes.hidden = true;
@@ -327,10 +345,10 @@ mostrarCarregamentoVoto();
 
     // Monta os dados do voto.
     const dadosVoto = {
-        tipo: "votoMaisProvavel",
-        nome: "Lorran",
-        nomeVotado: nomeParticipanteSelecionado
-    };
+    tipo: "votoMaisProvavel",
+    nome: nomeUsuarioAtual,
+    nomeVotado: nomeParticipanteSelecionado
+};
 
     console.log("Enviando voto:", dadosVoto);
 
@@ -389,10 +407,10 @@ function consultarResultadoAposVoto() {
     const script = document.createElement("script");
 
     script.src =
-        URL_SCRIPT_JOGO +
-        "?jogo=maisProvavel" +
-        "&nome=Lorran" +
-        "&callback=receberResultadoVoto";
+    URL_SCRIPT_JOGO +
+    "?jogo=maisProvavel" +
+    "&nome=" + encodeURIComponent(nomeUsuarioAtual) +
+    "&callback=receberResultadoVoto";
 
     document.body.appendChild(script);
 
@@ -518,4 +536,175 @@ function esconderCarregamentoVoto() {
 
 function voltarCentral() {
     window.location.href = "index.html";
+}
+
+// ABRIR E FECHAR FORMULÁRIO DE SUGESTÃO
+
+const btnAbrirSugestao = document.getElementById("btnAbrirSugestao");
+const formularioSugestao = document.getElementById("formularioSugestao");
+
+btnAbrirSugestao.addEventListener("click", () => {
+
+    formularioSugestao.hidden = !formularioSugestao.hidden;
+
+});
+
+// ENVIAR SUGESTÃO DE PERGUNTA
+
+const btnConfirmarSugestao = document.getElementById("btnConfirmarSugestao");
+const textoSugestao = document.getElementById("textoSugestao");
+const sugestaoAnonima = document.getElementById("sugestaoAnonima");
+const mensagemSugestao = document.getElementById("mensagemSugestao");
+
+btnConfirmarSugestao.addEventListener("click", enviarSugestao);
+
+function enviarSugestao() {
+
+    const pergunta = textoSugestao.value.trim();
+
+    if (!pergunta) {
+        mensagemSugestao.textContent = "Digite uma pergunta antes de enviar.";
+        return;
+    }
+
+    const dadosSugestao = {
+        tipo: "sugerirPergunta",
+        nome: nomeUsuarioAtual,
+        pergunta: pergunta,
+        anonimo: sugestaoAnonima.checked
+    };
+
+    btnConfirmarSugestao.disabled = true;
+    btnConfirmarSugestao.textContent = "Enviando...";
+
+    fetch(URL_SCRIPT_JOGO, {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+            "Content-Type": "text/plain;charset=utf-8"
+        },
+        body: JSON.stringify(dadosSugestao)
+    })
+    .then(function() {
+
+        mensagemSugestao.textContent = "Sugestão enviada! Obrigado pela contribuição.";
+        mensagemSugestao.style.color = "#4ade80";
+
+        textoSugestao.value = "";
+        sugestaoAnonima.checked = false;
+
+        btnConfirmarSugestao.disabled = false;
+        btnConfirmarSugestao.textContent = "Enviar pergunta";
+
+    })
+    .catch(function(erro) {
+
+        console.error("Erro ao enviar sugestão:", erro);
+
+        mensagemSugestao.textContent = "Não foi possível enviar. Tente novamente.";
+        mensagemSugestao.style.color = "#f87171";
+
+        btnConfirmarSugestao.disabled = false;
+        btnConfirmarSugestao.textContent = "Enviar pergunta";
+
+    });
+}
+
+
+function mostrarHistoricoMaisProvavel(historico) {
+
+    const secaoHistorico = document.getElementById("secaoHistorico");
+    const listaHistorico = document.getElementById("listaHistoricoMaisProvavel");
+
+    // Limpa os cards anteriores.
+    listaHistorico.innerHTML = "";
+
+    // Se não houver rodadas encerradas, esconde a seção.
+    if (!historico || historico.length === 0) {
+        secaoHistorico.hidden = true;
+        return;
+    }
+
+    // Percorre cada rodada encerrada.
+    historico.forEach(function(rodada) {
+
+        // Cria o card.
+        const card = document.createElement("div");
+        card.classList.add("card-historico");
+
+        // Cria o texto da pergunta.
+        const pergunta = document.createElement("div");
+        pergunta.classList.add("card-historico-pergunta");
+        pergunta.textContent = rodada.pergunta;
+
+        // Cria a área dos vencedores.
+        const areaVencedores = document.createElement("div");
+        areaVencedores.classList.add("card-historico-vencedor");
+
+        const resultados = rodada.resultado || [];
+
+        // Soma todos os votos da rodada.
+        const totalVotos = resultados.reduce(function(total, pessoa) {
+            return total + Number(pessoa.votos || 0);
+        }, 0);
+
+        if (totalVotos === 0) {
+
+            const semVotos = document.createElement("strong");
+            semVotos.textContent = "Sem votos registrados";
+            areaVencedores.appendChild(semVotos);
+
+        } else {
+
+            // Descobre a maior quantidade de votos.
+            const maiorNumeroVotos = Math.max(
+                ...resultados.map(pessoa => Number(pessoa.votos || 0))
+            );
+
+            // Identifica todos que empataram em primeiro lugar.
+            const vencedores = resultados.filter(function(pessoa) {
+                return Number(pessoa.votos || 0) === maiorNumeroVotos;
+            });
+
+            vencedores.forEach(function(vencedor) {
+
+                const participante = participantes.find(function(p) {
+                    return p.nome.trim().toLowerCase() ===
+                        vencedor.nome.trim().toLowerCase();
+                });
+
+                const info = document.createElement("div");
+                info.classList.add("card-historico-info");
+
+                if (participante) {
+                    const foto = document.createElement("img");
+                    foto.src = participante.foto;
+                    foto.alt = vencedor.nome;
+                    info.appendChild(foto);
+                }
+
+                const nome = document.createElement("strong");
+                nome.textContent = vencedor.nome;
+
+                const porcentagem = document.createElement("span");
+                porcentagem.textContent =
+                    Math.round((maiorNumeroVotos / totalVotos) * 100) + "% dos votos";
+
+                info.appendChild(nome);
+                info.appendChild(porcentagem);
+
+                areaVencedores.appendChild(info);
+            });
+        }
+
+        // Junta os elementos no card.
+        card.appendChild(pergunta);
+        card.appendChild(areaVencedores);
+
+        // Adiciona o card à lista.
+        listaHistorico.appendChild(card);
+    });
+
+    // Exibe a seção com os cards.
+    secaoHistorico.hidden = false;
 }

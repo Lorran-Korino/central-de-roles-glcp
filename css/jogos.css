@@ -578,3 +578,254 @@ body {
     animation: girarAmpulheta 1.5s linear infinite;
     vertical-align: middle;
 }
+
+
+/* =====================================
+   CARREGAMENTO INICIAL DOS VOTOS
+===================================== */
+
+.carregamento-inicial {
+    max-width: 850px;
+    margin: 55px auto 0;
+    padding: 45px 20px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+
+    color: var(--cor-roxo-claro);
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.spinner-votos {
+    width: 35px;
+    height: 35px;
+
+    border: 3px solid rgba(167, 139, 250, 0.2);
+    border-top-color: var(--cor-roxo-claro);
+    border-radius: 50%;
+
+    animation: girarVotos 0.8s linear infinite;
+}
+
+@keyframes girarVotos {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ÁREA DE SUGESTÃO */
+.area-sugestao {
+    max-width: 850px;
+    margin: 60px auto 40px;
+    padding: 30px 20px;
+    text-align: center;
+    border-top: 1px solid rgba(167, 139, 250, 0.2);
+}
+
+.area-sugestao h2 {
+    color: #fff;
+    font-size: 22px;
+    margin-bottom: 10px;
+}
+
+.area-sugestao p {
+    color: #a1a1aa;
+    font-size: 14px;
+    margin-bottom: 22px;
+}
+
+.btn-enviar-sugestao {
+    padding: 14px 28px;
+    border: 1px solid rgba(167, 139, 250, 0.4);
+    border-radius: 12px;
+    background: rgba(139, 92, 246, 0.15);
+    color: #c4b5fd;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.btn-enviar-sugestao:hover {
+    background: #8b5cf6;
+    color: #fff;
+    transform: translateY(-2px);
+}
+
+/* FORMULÁRIO DE SUGESTÃO */
+.formulario-sugestao {
+    max-width: 550px;
+    margin: 25px auto 0;
+    padding: 25px;
+    background: rgba(139, 92, 246, 0.08);
+    border: 1px solid rgba(167, 139, 250, 0.2);
+    border-radius: 16px;
+    text-align: left;
+}
+
+.formulario-sugestao h3 {
+    color: #fff;
+    font-size: 17px;
+    margin-bottom: 15px;
+}
+
+.formulario-sugestao textarea {
+    width: 100%;
+    min-height: 100px;
+    padding: 14px;
+    resize: vertical;
+    border: 1px solid rgba(167, 139, 250, 0.3);
+    border-radius: 10px;
+    outline: none;
+    background: #15121f;
+    color: #fff;
+    font-family: inherit;
+    font-size: 14px;
+}
+
+.formulario-sugestao textarea:focus {
+    border-color: #a78bfa;
+}
+
+.formulario-sugestao textarea::placeholder {
+    color: #777184;
+}
+
+.opcao-anonima {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin: 16px 0;
+    color: #c4b5fd;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.opcao-anonima input {
+    accent-color: #8b5cf6;
+    width: 16px;
+    height: 16px;
+}
+
+.btn-confirmar-sugestao {
+    width: 100%;
+    padding: 13px;
+    border: none;
+    border-radius: 10px;
+    background: #8b5cf6;
+    color: #fff;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.btn-confirmar-sugestao:hover {
+    background: #7c3aed;
+}
+
+#mensagemSugestao {
+    margin-top: 12px;
+    font-size: 13px;
+    text-align: center;
+}
+
+
+/* HISTÓRICO DE RODADAS */
+
+.secao-historico {
+    max-width: 850px;
+    margin: 55px auto 0;
+    padding: 30px 20px;
+    border-top: 1px solid rgba(167, 139, 250, 0.2);
+}
+
+.cabecalho-historico {
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+.cabecalho-historico h2 {
+    color: var(--cor-roxo-claro);
+    font-size: 22px;
+    margin-bottom: 8px;
+}
+
+.cabecalho-historico p {
+    color: #999;
+    font-size: 14px;
+}
+
+#listaHistoricoMaisProvavel {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.card-historico {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 20px;
+    background: #14141f;
+    border: 1px solid rgba(167, 139, 250, 0.18);
+    border-radius: 14px;
+}
+
+.card-historico-pergunta {
+    flex: 1;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.5;
+}
+
+.card-historico-vencedor {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 180px;
+}
+
+.card-historico-vencedor img {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--cor-roxo-claro);
+}
+
+.card-historico-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.card-historico-info strong {
+    color: #fff;
+    font-size: 14px;
+}
+
+.card-historico-info span {
+    color: var(--cor-roxo-claro);
+    font-size: 13px;
+    font-weight: 700;
+}
+
+@media (max-width: 600px) {
+    .card-historico {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .card-historico-vencedor {
+        min-width: 0;
+    }
+}
